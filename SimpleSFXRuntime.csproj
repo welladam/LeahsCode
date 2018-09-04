@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{FD56DB48-6BA6-8B05-E507-15376D5223C9}</ProjectGuid>
+    <ProjectGuid>{6D9EC3D3-1B1E-2EBE-C45C-95149553B6EC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>SimpleSFXRuntime</AssemblyName>

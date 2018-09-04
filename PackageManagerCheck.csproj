@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{30B90EFB-1A6B-5772-C154-40A7B0BF4F1E}</ProjectGuid>
+    <ProjectGuid>{8CE1D572-ECFE-253C-9D86-2A851345DCDB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>PackageManagerCheck</AssemblyName>

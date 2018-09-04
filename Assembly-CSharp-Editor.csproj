@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{DEE51A8B-22FB-D0FF-DDC7-E4C886131531}</ProjectGuid>
+    <ProjectGuid>{AA49BAD4-8494-A488-1754-B7496C868C34}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -160,31 +160,31 @@
     <Compile Include="Assets\3DGamekit\Scripts\Game\Timeline\TimeMachine\Editor\TimeMachineClipInspector.cs" />
     <Compile Include="Assets\3DGamekit\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
     <Reference Include="Cinemachine">
-      <HintPath>C:/Users/Alice/Documents/LeahsCode/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
+      <HintPath>C:/Users/Alice/Documents/LeahsCodeTCC/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ProBuilder.AddOns.Editor">
-      <HintPath>C:/Users/Alice/Documents/LeahsCode/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
+      <HintPath>C:/Users/Alice/Documents/LeahsCodeTCC/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/Alice/Documents/LeahsCode/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/Alice/Documents/LeahsCodeTCC/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/Alice/Documents/LeahsCode/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/Alice/Documents/LeahsCodeTCC/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/Alice/Documents/LeahsCode/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/Alice/Documents/LeahsCodeTCC/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Editor">
-      <HintPath>C:/Users/Alice/Documents/LeahsCode/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
+      <HintPath>C:/Users/Alice/Documents/LeahsCodeTCC/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>C:/Users/Alice/Documents/LeahsCode/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+      <HintPath>C:/Users/Alice/Documents/LeahsCodeTCC/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.cinemachine.editor">
-      <HintPath>C:/Users/Alice/Documents/LeahsCode/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
+      <HintPath>C:/Users/Alice/Documents/LeahsCodeTCC/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/Alice/Documents/LeahsCode/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/Alice/Documents/LeahsCodeTCC/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -498,27 +498,27 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{07704D47-30DF-734C-942A-E21C59910E11}</Project>
+      <Project>{97F4CE35-5006-2E5C-88E7-966B31CED138}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
     <ProjectReference Include="NavMeshComponents.csproj">
-      <Project>{EEFDC9BF-F5B9-873E-9764-2AB01EBD4E4B}</Project>
+      <Project>{5AB4F5AF-9E30-DD25-2F03-4FE8D3A7E027}</Project>
       <Name>NavMeshComponents</Name>
     </ProjectReference>
     <ProjectReference Include="WorldBuildingRuntime.csproj">
-      <Project>{9BA52151-CFDD-FEE7-589C-C6F45AF900E2}</Project>
+      <Project>{913093D1-103C-2B83-61D4-E4D20C86114F}</Project>
       <Name>WorldBuildingRuntime</Name>
     </ProjectReference>
     <ProjectReference Include="Skybox3DRuntime.csproj">
-      <Project>{1660DE66-4A44-F8E8-8BD1-7B22C2A4277F}</Project>
+      <Project>{FD9D2FF3-E2A0-C6D4-E2BE-47E03A3CA429}</Project>
       <Name>Skybox3DRuntime</Name>
     </ProjectReference>
     <ProjectReference Include="PackageManagerCheck.csproj">
-      <Project>{30B90EFB-1A6B-5772-C154-40A7B0BF4F1E}</Project>
+      <Project>{8CE1D572-ECFE-253C-9D86-2A851345DCDB}</Project>
       <Name>PackageManagerCheck</Name>
     </ProjectReference>
     <ProjectReference Include="SimpleSFXRuntime.csproj">
-      <Project>{FD56DB48-6BA6-8B05-E507-15376D5223C9}</Project>
+      <Project>{6D9EC3D3-1B1E-2EBE-C45C-95149553B6EC}</Project>
       <Name>SimpleSFXRuntime</Name>
     </ProjectReference>
   </ItemGroup>

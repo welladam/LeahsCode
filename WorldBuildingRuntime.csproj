@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{9BA52151-CFDD-FEE7-589C-C6F45AF900E2}</ProjectGuid>
+    <ProjectGuid>{913093D1-103C-2B83-61D4-E4D20C86114F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>WorldBuildingRuntime</AssemblyName>

@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{1660DE66-4A44-F8E8-8BD1-7B22C2A4277F}</ProjectGuid>
+    <ProjectGuid>{FD9D2FF3-E2A0-C6D4-E2BE-47E03A3CA429}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Skybox3DRuntime</AssemblyName>
