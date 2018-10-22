@@ -7,27 +7,58 @@ using Gamekit3D;
 [RequireComponent(typeof(Collider))]
 public class InteractPuzzleCrystalBox : MonoBehaviour {
 
+    public static bool forceInteractClose = false;
+
     public LayerMask layers;
-    public TextMesh textButton;
+    public TextMesh enterTextButton;
+    public TextMesh leaveTextButton;
     public Transform objectOnFocus;
+    public Transform ellen;
+    public Transform ellenHead;
     public CameraSettings cameraRig;
+
+    public Camera cameraOriginal;
+    public Camera cameraFocus;
+
+    public GameObject uiPuzzle;
 
     private bool hasPlayerInArea;
 
 	// Use this for initialization
 	void Start () {
-        this.textButton.gameObject.SetActive(false);
+        this.enterTextButton.gameObject.SetActive(false);
+        this.leaveTextButton.gameObject.SetActive(false); 
         this.hasPlayerInArea = false;
+        this.uiPuzzle.SetActive(false);
     }
 
     private void Update()
     {
         if (Input.GetButton("Interact") && hasPlayerInArea)
+        {              
+                       
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            PlayerInput.Instance.ReleaseControl();
+            this.enterTextButton.gameObject.SetActive(false);
+            this.leaveTextButton.gameObject.SetActive(true);
+            cameraOriginal.enabled = false;
+            cameraFocus.enabled = true;
+            this.uiPuzzle.SetActive(true);
+        }
+
+        if (forceInteractClose || (Input.GetButton("Interact Close") && hasPlayerInArea))
         {
-            cameraRig.follow = objectOnFocus;
-            cameraRig.lookAt = objectOnFocus;
-            cameraRig.keyboardAndMouseCamera.Priority = 0;
-            cameraRig.controllerCamera.Priority = 1;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            PlayerInput.Instance.GainControl();
+            this.enterTextButton.gameObject.SetActive(true);
+            this.leaveTextButton.gameObject.SetActive(false);
+            cameraOriginal.enabled = true;
+            cameraFocus.enabled = false;
+            this.uiPuzzle.SetActive(false);
+
+            forceInteractClose = false;
         }
     }
 
@@ -36,7 +67,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
     {
         if (0 != (layers.value & 1 << other.gameObject.layer))
         {
-            this.textButton.gameObject.SetActive(true);
+            this.enterTextButton.gameObject.SetActive(true);
             this.hasPlayerInArea = true;
         }
     }
@@ -45,7 +76,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
     {
         if (0 != (layers.value & 1 << other.gameObject.layer))
         {
-            this.textButton.gameObject.SetActive(false);
+            this.enterTextButton.gameObject.SetActive(false);
             this.hasPlayerInArea = false;
         }
     }

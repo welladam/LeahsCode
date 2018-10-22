@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{07704D47-30DF-734C-942A-E21C59910E11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeahsCode", "Assembly-CSharp.csproj", "{07704D47-30DF-734C-942A-E21C59910E11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldBuildingRuntime", "WorldBuildingRuntime.csproj", "{9BA52151-CFDD-FEE7-589C-C6F45AF900E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeahsCode", "WorldBuildingRuntime.csproj", "{9BA52151-CFDD-FEE7-589C-C6F45AF900E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavMeshComponents", "NavMeshComponents.csproj", "{EEFDC9BF-F5B9-873E-9764-2AB01EBD4E4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeahsCode", "NavMeshComponents.csproj", "{EEFDC9BF-F5B9-873E-9764-2AB01EBD4E4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSFXRuntime", "SimpleSFXRuntime.csproj", "{FD56DB48-6BA6-8B05-E507-15376D5223C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeahsCode", "SimpleSFXRuntime.csproj", "{FD56DB48-6BA6-8B05-E507-15376D5223C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skybox3DRuntime", "Skybox3DRuntime.csproj", "{1660DE66-4A44-F8E8-8BD1-7B22C2A4277F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeahsCode", "Skybox3DRuntime.csproj", "{1660DE66-4A44-F8E8-8BD1-7B22C2A4277F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{DEE51A8B-22FB-D0FF-DDC7-E4C886131531}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeahsCode", "Assembly-CSharp-Editor.csproj", "{DEE51A8B-22FB-D0FF-DDC7-E4C886131531}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageManagerCheck", "PackageManagerCheck.csproj", "{30B90EFB-1A6B-5772-C154-40A7B0BF4F1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeahsCode", "PackageManagerCheck.csproj", "{30B90EFB-1A6B-5772-C154-40A7B0BF4F1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
