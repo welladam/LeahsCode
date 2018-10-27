@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonDownScript : MonoBehaviour
 {
-    public GameObject button;
+    public Button button;
     public GameObject contentResultContainer;
     public GameCommandReceiver door;
 
@@ -17,6 +18,7 @@ public class ButtonDownScript : MonoBehaviour
     void Start()
     {
         currentNumberLoopForCommand = 1;
+        button.onClick.AddListener(onClickButton);
     }
 
     // Update is called once per frame
@@ -25,7 +27,7 @@ public class ButtonDownScript : MonoBehaviour
 
     }
 
-    private void OnMouseUpAsButton()
+    private void onClickButton()
     {
         if (button.name == "startButton")
         {
@@ -42,7 +44,7 @@ public class ButtonDownScript : MonoBehaviour
             return;
         }
 
-        if (button.name == "forCommand")
+        if (button.name == "forCommandButton")
         {
             UIPuzzleController.mustShowForCommandChoices = true;
 

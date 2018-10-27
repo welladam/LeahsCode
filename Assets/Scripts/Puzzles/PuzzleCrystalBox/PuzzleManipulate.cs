@@ -18,6 +18,9 @@ public class PuzzleManipulate : MonoBehaviour
     private int? currentId = null;
     private List<GameObject> generatedObjects = new List<GameObject>();
 
+    private float defaultMovePositionCrystal = 0.12f;
+    private float defaultMovePositionCrystalSimulate = 0.07f;
+
     // Use this for initialization
     void Start()
     {
@@ -68,51 +71,35 @@ public class PuzzleManipulate : MonoBehaviour
 
                     if (command == "moveUp")
                     {
-                        newPosition = new Vector3(crystalPosition.x, crystalPosition.y + 0.4f, crystalPosition.z);
+                        newPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystal, crystalPosition.z);
                         nameArrow = "arrowUp";
-                        arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y + 0.2f, crystalPosition.z);
+                        arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystalSimulate, crystalPosition.z);
                     }
 
                     if (command == "moveDown")
                     {
-                        newPosition = new Vector3(crystalPosition.x, crystalPosition.y - 0.4f, crystalPosition.z);
+                        newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
                         nameArrow = "arrowDown";
-                        arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y - 0.2f, crystalPosition.z);
+                        arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystalSimulate, crystalPosition.z);
                     }
 
-                    if (command == "moveRight")
+                    if (command == "turnRight")
                     {
-                        newPosition = new Vector3(crystalPosition.x + 0.4f, crystalPosition.y, crystalPosition.z);
+                        newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
                         nameArrow = "arrowRight";
-                        arrowPosition = new Vector3(crystalPosition.x + 0.2f, crystalPosition.y, crystalPosition.z);
+                        arrowPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystalSimulate, crystalPosition.y, crystalPosition.z);
                     }
 
-                    if (command == "moveLeft")
+                    if (command == "turnLeft")
                     {
-                        newPosition = new Vector3(crystalPosition.x - 0.4f, crystalPosition.y, crystalPosition.z);
+                        newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
                         nameArrow = "arrowLeft";
-                        arrowPosition = new Vector3(crystalPosition.x - 0.2f, crystalPosition.y, crystalPosition.z);
-                    }
-
-                    if (command == "attack")
-                    {
-                        //Damageable d = puzzleBox1.GetComponentInChildren<Damageable>();
-                        //if (d != null)
-                        //{
-                        //    Damageable.DamageMessage damage = new Damageable.DamageMessage()
-                        //    {
-                        //        amount = 1,
-                        //        damager = this,
-                        //        direction = Vector3.up,
-                        //    };
-
-                        //    d.ApplyDamage(damage);
-                        //}
+                        arrowPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystalSimulate, crystalPosition.y, crystalPosition.z);
                     }
 
                     if (newPosition != crystalPosition)
                     {
-                        if ((newPosition.x <= -1.3 || newPosition.x >= 0.1) || (newPosition.y <= 1.3 || newPosition.y >= 2.5))
+                        if ((newPosition.x <= -1.0 || newPosition.x >= -0.6) || (newPosition.y <= 1.3 || newPosition.y >= 1.7))
                         {
                             listCommands.RemoveAt(listCommands.Count - 1);
                             return;
