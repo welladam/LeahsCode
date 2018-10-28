@@ -11,11 +11,6 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
 
     public LayerMask layers;
     public TextMesh enterTextButton;
-    public TextMesh leaveTextButton;
-    public Transform objectOnFocus;
-    public Transform ellen;
-    public Transform ellenHead;
-    public CameraSettings cameraRig;
 
     public Camera cameraOriginal;
     public Camera cameraFocus;
@@ -27,7 +22,6 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         this.enterTextButton.gameObject.SetActive(false);
-        this.leaveTextButton.gameObject.SetActive(false); 
         this.hasPlayerInArea = false;
         this.uiPuzzle.SetActive(false);
     }
@@ -36,15 +30,13 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
     {
         if (Input.GetButton("Interact") && hasPlayerInArea)
         {              
-                       
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             PlayerInput.Instance.ReleaseControl();
-            this.enterTextButton.gameObject.SetActive(false);
-            this.leaveTextButton.gameObject.SetActive(true);
             cameraOriginal.enabled = false;
             cameraFocus.enabled = true;
             this.uiPuzzle.SetActive(true);
+            enterTextButton.gameObject.SetActive(false);
         }
 
         if (forceInteractClose || (Input.GetButton("Interact Close") && hasPlayerInArea))
@@ -52,12 +44,10 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             PlayerInput.Instance.GainControl();
-            this.enterTextButton.gameObject.SetActive(true);
-            this.leaveTextButton.gameObject.SetActive(false);
             cameraOriginal.enabled = true;
             cameraFocus.enabled = false;
             this.uiPuzzle.SetActive(false);
-
+            enterTextButton.gameObject.SetActive(true);
             forceInteractClose = false;
         }
     }

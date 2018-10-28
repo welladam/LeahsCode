@@ -11,7 +11,7 @@ public class ButtonDownScript : MonoBehaviour
     public GameCommandReceiver door;
 
     static public int currentId = 0;
-    static public string currentCommnand = string.Empty;
+    static public string currentCommand = string.Empty;
     static public int currentNumberLoopForCommand;
 
     // Use this for initialization
@@ -31,16 +31,16 @@ public class ButtonDownScript : MonoBehaviour
     {
         if (button.name == "startButton")
         {
-            InteractPuzzleCrystalBox.forceInteractClose = true;
-            SendGameCommand sendGameCommand = new SendGameCommand();
+            //InteractPuzzleCrystalBox.forceInteractClose = true;
+            //SendGameCommand sendGameCommand = new SendGameCommand();
 
-            sendGameCommand.interactionType = GameCommandType.Open;
-            sendGameCommand.interactiveObject = door;
-            sendGameCommand.coolDown = 1;
-            sendGameCommand.oneShot = true;
-            sendGameCommand.Send();
+            //sendGameCommand.interactionType = GameCommandType.Open;
+            //sendGameCommand.interactiveObject = door;
+            //sendGameCommand.coolDown = 1;
+            //sendGameCommand.oneShot = true;
+            //sendGameCommand.Send();
 
-            //PuzzleManipulate.startPuzzleControl = true;
+            PuzzleManipulate.startPuzzleControl = true;
             return;
         }
 
@@ -48,7 +48,7 @@ public class ButtonDownScript : MonoBehaviour
         {
             UIPuzzleController.mustShowForCommandChoices = true;
 
-            currentCommnand = "for";
+            currentCommand = "for";
             currentId++;
             return;
         }
@@ -64,7 +64,7 @@ public class ButtonDownScript : MonoBehaviour
             }
 
             UIPuzzleController.mustShowForCommandChoices = false;
-            currentCommnand = string.Empty;
+            currentCommand = string.Empty;
             return;
         }
 
@@ -73,18 +73,44 @@ public class ButtonDownScript : MonoBehaviour
         {
             //Vector2 originalSize = contentResultContainer.GetComponent<RectTransform>().sizeDelta;
             //contentResultContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(originalSize.x, originalSize.y + 2);
+
+            if(currentCommand == "for") {
+                
+            }
+
             UIPuzzleController.mustShowForCommandChoices = false;
-            currentCommnand = string.Empty;
+            currentCommand = string.Empty;
             return;
         }
 
-        CommandPuzzle commandPuzzle = new CommandPuzzle();
-        commandPuzzle.id = currentId;
-        commandPuzzle.command = button.name;
-        commandPuzzle.commandType = currentCommnand;
-        commandPuzzle.countLoop = currentNumberLoopForCommand;
+        if(currentCommand == "for") {
+            CommandPuzzle lastCommand = PuzzleManipulate.listCommands.Count > 0 
+                                                        ? PuzzleManipulate.listCommands[PuzzleManipulate.listCommands.Count - 1] 
+                                                        : new CommandPuzzle();
+            
+            if(lastCommand.id != currentId) {
+                CommandPuzzle commandPuzzle = new CommandPuzzle();
+                commandPuzzle.id = currentId;
+                commandPuzzle.commandType = currentCommand;
+                commandPuzzle.countLoop = currentNumberLoopForCommand;
+                PuzzleManipulate.listCommands.Add(commandPuzzle);
+                lastCommand = PuzzleManipulate.listCommands[PuzzleManipulate.listCommands.Count - 1];
+            }
 
-        PuzzleManipulate.listCommands.Add(commandPuzzle);
-        PuzzleManipulate.showNextStepTutorial = true;
+            lastCommand.commandsFor.Add(button.name);
+            PuzzleManipulate.showNextStepTutorial = true;
+            return;
+        }
+
+
+        if (currentCommand == "if")
+        {
+            CommandPuzzle commandPuzzle = new CommandPuzzle();
+            commandPuzzle.id = currentId;
+            commandPuzzle.command = button.name;
+            commandPuzzle.commandType = currentCommand;
+            commandPuzzle.countLoop = currentNumberLoopForCommand;
+            PuzzleManipulate.listCommands.Add(commandPuzzle);
+        }
     }
 }

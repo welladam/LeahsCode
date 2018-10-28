@@ -15,11 +15,10 @@ public class PuzzleManipulate : MonoBehaviour
     static public bool startPuzzleControl = false;
     static public bool showNextStepTutorial = false;
 
-    private int? currentId = null;
     private List<GameObject> generatedObjects = new List<GameObject>();
 
     private float defaultMovePositionCrystal = 0.12f;
-    private float defaultMovePositionCrystalSimulate = 0.07f;
+    private float defaultMovePositionCrystalSimulate = 0.06f;
 
     // Use this for initialization
     void Start()
@@ -40,16 +39,6 @@ public class PuzzleManipulate : MonoBehaviour
     {
         if (showNextStepTutorial && listCommands.Count > 0)
         {
-            int lastIndex = listCommands.Count - 1;
-            CommandPuzzle lastCommand = listCommands[lastIndex];
-
-            if (currentId != lastCommand.id)
-            {
-                currentId = lastCommand.id;
-            }
-
-            List<CommandPuzzle> commands = listCommands.FindAll(command => command.id == currentId);
-
             for (int i = 0; i < generatedObjects.Count; i++)
             {
                 Destroy(generatedObjects[i]);
@@ -57,60 +46,65 @@ public class PuzzleManipulate : MonoBehaviour
 
             this.puzzleCrystalSimulate.transform.position = this.puzzleCrystal.transform.position;
 
-            for (int i = 0; i < lastCommand.countLoop; i++)
+            foreach (CommandPuzzle commandPuzzleMain in listCommands)
             {
-                foreach (CommandPuzzle commandPuzzle in commands)
+                if (commandPuzzleMain.commandType == "for")
                 {
-                    Vector3 crystalPosition = this.puzzleCrystalSimulate.transform.position;
-                    Vector3 newPosition = this.puzzleCrystalSimulate.transform.position;
-
-                    Vector3 arrowPosition = new Vector3();
-                    string nameArrow = string.Empty;
-
-                    string command = commandPuzzle.command;
-
-                    if (command == "moveUp")
+                    for (int i = 0; i < commandPuzzleMain.countLoop; i++)
                     {
-                        newPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystal, crystalPosition.z);
-                        nameArrow = "arrowUp";
-                        arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystalSimulate, crystalPosition.z);
-                    }
-
-                    if (command == "moveDown")
-                    {
-                        newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
-                        nameArrow = "arrowDown";
-                        arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystalSimulate, crystalPosition.z);
-                    }
-
-                    if (command == "turnRight")
-                    {
-                        newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
-                        nameArrow = "arrowRight";
-                        arrowPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystalSimulate, crystalPosition.y, crystalPosition.z);
-                    }
-
-                    if (command == "turnLeft")
-                    {
-                        newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
-                        nameArrow = "arrowLeft";
-                        arrowPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystalSimulate, crystalPosition.y, crystalPosition.z);
-                    }
-
-                    if (newPosition != crystalPosition)
-                    {
-                        if ((newPosition.x <= -1.0 || newPosition.x >= -0.6) || (newPosition.y <= 1.3 || newPosition.y >= 1.7))
+                        for (int j = 0; j < commandPuzzleMain.commandsFor.Count; j++)
                         {
-                            listCommands.RemoveAt(listCommands.Count - 1);
-                            return;
+                            string command = commandPuzzleMain.commandsFor[j];
+                            Vector3 crystalPosition = this.puzzleCrystalSimulate.transform.position;
+                            Vector3 newPosition = this.puzzleCrystalSimulate.transform.position;
+
+                            Vector3 arrowPosition = new Vector3();
+                            string nameArrow = string.Empty;
+
+                            if (command == "moveUp")
+                            {
+                                newPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystal, crystalPosition.z);
+                                nameArrow = "arrowUp";
+                                arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystalSimulate, crystalPosition.z);
+                            }
+
+                            if (command == "moveDown")
+                            {
+                                newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
+                                nameArrow = "arrowDown";
+                                arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystalSimulate, crystalPosition.z);
+                            }
+
+                            if (command == "turnRight")
+                            {
+                                newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
+                                nameArrow = "arrowRight";
+                                arrowPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystalSimulate, crystalPosition.y, crystalPosition.z);
+                            }
+
+                            if (command == "turnLeft")
+                            {
+                                newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
+                                nameArrow = "arrowLeft";
+                                arrowPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystalSimulate, crystalPosition.y, crystalPosition.z);
+                            }
+
+                            if (newPosition != crystalPosition)
+                            {
+                                if ((newPosition.x <= -1.0 || newPosition.x >= -0.6) || (newPosition.y <= 1.3 || newPosition.y >= 1.7))
+                                {
+                                    commandPuzzleMain.commandsFor.RemoveAt(j);
+                                    return;
+                                }
+
+                                this.puzzleCrystalSimulate.SetActive(true);
+                                this.puzzleCrystalSimulate.transform.position = newPosition;
+
+                                GameObject arrow = Resources.Load("Prefabs/" + nameArrow, typeof(GameObject)) as GameObject;
+                                var prefab = Instantiate(arrow, arrowPosition, Quaternion.identity);
+                                generatedObjects.Add(prefab);
+                            }
                         }
-
-                        this.puzzleCrystalSimulate.SetActive(true);
-                        this.puzzleCrystalSimulate.transform.position = newPosition;
-
-                        GameObject arrow = Resources.Load("Prefabs/" + nameArrow, typeof(GameObject)) as GameObject;
-                        var prefab = Instantiate(arrow, arrowPosition, Quaternion.identity);
-                        generatedObjects.Add(prefab);
                     }
                 }
             }
@@ -132,14 +126,17 @@ public class PuzzleManipulate : MonoBehaviour
                 Destroy(prefab);
             }
 
-            foreach (CommandPuzzle command in listCommands)
+            foreach (CommandPuzzle commandPuzzleMain in listCommands)
             {
-                if(command.commandType == "for")
+                if (commandPuzzleMain.commandType == "for")
                 {
-                    for(int i = 0; i < command.countLoop; i++)
+                    for (int i = 0; i < commandPuzzleMain.countLoop; i++)
                     {
-                        yield return new WaitForSeconds(1);
-                        this.puzzleCrystal.transform.position = this.getNewPositionCrystal(command);
+                        for (int j = 0; j < commandPuzzleMain.commandsFor.Count; j++)
+                        {
+                            yield return new WaitForSeconds(1);
+                            this.puzzleCrystal.transform.position = this.getNewPositionCrystal(commandPuzzleMain.commandsFor[j]);
+                        }
                     }
                 }
             }
@@ -148,32 +145,32 @@ public class PuzzleManipulate : MonoBehaviour
         }
     }
 
-    private Vector3 getNewPositionCrystal(CommandPuzzle command)
+    private Vector3 getNewPositionCrystal(string command)
     {
         Vector3 crystalPosition = this.puzzleCrystal.transform.position;
         Vector3 newPosition = crystalPosition;
 
-        if (command.command == "moveUp")
+        if (command == "moveUp")
         {
-            newPosition = new Vector3(crystalPosition.x, crystalPosition.y + 0.4f, crystalPosition.z);
+            newPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystal, crystalPosition.z);
         }
 
-        if (command.command == "moveDown")
+        if (command == "moveDown")
         {
-            newPosition = new Vector3(crystalPosition.x, crystalPosition.y - 0.4f, crystalPosition.z);
+            newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
         }
 
-        if (command.command == "moveRight")
+        if (command == "moveRight")
         {
-            newPosition = new Vector3(crystalPosition.x + 0.4f, crystalPosition.y, crystalPosition.z);
+            newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
         }
 
-        if (command.command == "moveLeft")
+        if (command == "moveLeft")
         {
-            newPosition = new Vector3(crystalPosition.x - 0.4f, crystalPosition.y, crystalPosition.z);
+            newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
         }
 
-        if (command.command == "attack")
+        if (command == "attack")
         {
             //Damageable d = puzzleBox1.GetComponentInChildren<Damageable>();
             //if (d != null)
