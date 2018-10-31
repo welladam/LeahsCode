@@ -8,6 +8,7 @@ using Gamekit3D;
 public class InteractPuzzleCrystalBox : MonoBehaviour {
 
     public static bool forceInteractClose = false;
+    public static bool alreadyCompletedPuzzle = false;
 
     public LayerMask layers;
     public TextMesh enterTextButton;
@@ -28,7 +29,12 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetButton("Interact") && hasPlayerInArea)
+        if (alreadyCompletedPuzzle)
+        {
+            enterTextButton.text = "Você já completou esse enigma!";
+        }
+
+        if (!alreadyCompletedPuzzle && Input.GetButton("Interact") && hasPlayerInArea)
         {              
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

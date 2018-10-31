@@ -300,6 +300,7 @@
     <Compile Include="Assets\3DGamekit\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\ButtonDownScript.cs" />
     <Compile Include="Assets\PuzzleForCountController.cs" />
+    <Compile Include="Assets\Scripts\Puzzles\Models\CommandFor.cs" />
     <Compile Include="Assets\Scripts\Puzzles\Models\CommandPuzzle.cs" />
     <Compile Include="Assets\Scripts\Puzzles\PuzzleCrystalBox\CrystalPuzzleCollider.cs" />
     <Compile Include="Assets\Scripts\Puzzles\PuzzleCrystalBox\InteractPuzzleCrystalBox.cs" />

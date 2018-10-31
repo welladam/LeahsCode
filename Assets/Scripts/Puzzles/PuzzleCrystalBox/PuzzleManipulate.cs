@@ -1,24 +1,29 @@
 ﻿using Gamekit3D;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PuzzleManipulate : MonoBehaviour
 {
-
     public GameObject puzzleBox1;
     public GameObject puzzleBox2;
     public GameObject puzzleCrystal;
     public GameObject puzzleCrystalSimulate;
+
+    public float defaultMovePositionCrystal = 0.12f;
+    public float defaultMovePositionCrystalSimulate = 0.06f;
+    public float defaultMinValueX = -1.0f;
+    public float defaultMaxValueX = -0.6f;
+    public float defaultMinValueY = 1.3f;
+    public float defaultMaxValueY = 1.7f;
 
     static public List<CommandPuzzle> listCommands = new List<CommandPuzzle>();
     static public bool startPuzzleControl = false;
     static public bool showNextStepTutorial = false;
 
     private List<GameObject> generatedObjects = new List<GameObject>();
-
-    private float defaultMovePositionCrystal = 0.12f;
-    private float defaultMovePositionCrystalSimulate = 0.06f;
+    private TextMeshProUGUI currentTextSelected;
 
     // Use this for initialization
     void Start()
@@ -54,35 +59,35 @@ public class PuzzleManipulate : MonoBehaviour
                     {
                         for (int j = 0; j < commandPuzzleMain.commandsFor.Count; j++)
                         {
-                            string command = commandPuzzleMain.commandsFor[j];
+                            CommandFor commandFor = commandPuzzleMain.commandsFor[j];
                             Vector3 crystalPosition = this.puzzleCrystalSimulate.transform.position;
                             Vector3 newPosition = this.puzzleCrystalSimulate.transform.position;
 
                             Vector3 arrowPosition = new Vector3();
                             string nameArrow = string.Empty;
 
-                            if (command == "moveUp")
+                            if (commandFor.command == "moveUp")
                             {
                                 newPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystal, crystalPosition.z);
                                 nameArrow = "arrowUp";
                                 arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystalSimulate, crystalPosition.z);
                             }
 
-                            if (command == "moveDown")
+                            if (commandFor.command == "moveDown")
                             {
                                 newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
                                 nameArrow = "arrowDown";
                                 arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystalSimulate, crystalPosition.z);
                             }
 
-                            if (command == "turnRight")
+                            if (commandFor.command == "turnRight")
                             {
                                 newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
                                 nameArrow = "arrowRight";
                                 arrowPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystalSimulate, crystalPosition.y, crystalPosition.z);
                             }
 
-                            if (command == "turnLeft")
+                            if (commandFor.command == "turnLeft")
                             {
                                 newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
                                 nameArrow = "arrowLeft";
@@ -91,7 +96,7 @@ public class PuzzleManipulate : MonoBehaviour
 
                             if (newPosition != crystalPosition)
                             {
-                                if ((newPosition.x <= -1.0 || newPosition.x >= -0.6) || (newPosition.y <= 1.3 || newPosition.y >= 1.7))
+                                if ((newPosition.x <= defaultMinValueX || newPosition.x >= defaultMaxValueX) || (newPosition.y <= defaultMinValueY || newPosition.y >= defaultMaxValueY))
                                 {
                                     commandPuzzleMain.commandsFor.RemoveAt(j);
                                     return;
@@ -115,7 +120,7 @@ public class PuzzleManipulate : MonoBehaviour
 
 
     public IEnumerator StartPuzzle()
-    {       
+    {
         if (startPuzzleControl)
         {
             startPuzzleControl = false;
@@ -135,7 +140,19 @@ public class PuzzleManipulate : MonoBehaviour
                         for (int j = 0; j < commandPuzzleMain.commandsFor.Count; j++)
                         {
                             yield return new WaitForSeconds(1);
-                            this.puzzleCrystal.transform.position = this.getNewPositionCrystal(commandPuzzleMain.commandsFor[j]);
+
+                            if (currentTextSelected != null)
+                            {
+                                currentTextSelected.fontSize = 25;
+                                currentTextSelected.color = Color.white;
+                                currentTextSelected.fontStyle = FontStyles.Normal;
+                            }
+
+                            currentTextSelected = commandPuzzleMain.panelResult.GetComponentsInChildren<TextMeshProUGUI>()[j + 1];
+                            currentTextSelected.fontSize = 30;
+                            currentTextSelected.color = new Color32(255, 112, 112, 255);
+                            currentTextSelected.fontStyle = FontStyles.Bold;
+                            this.puzzleCrystal.transform.position = this.getNewPositionCrystal(commandPuzzleMain.commandsFor[j].command);
                         }
                     }
                 }
@@ -160,12 +177,12 @@ public class PuzzleManipulate : MonoBehaviour
             newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
         }
 
-        if (command == "moveRight")
+        if (command == "turnRight")
         {
             newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
         }
 
-        if (command == "moveLeft")
+        if (command == "turnLeft")
         {
             newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
         }
