@@ -10,7 +10,6 @@ public class ButtonDownScript : MonoBehaviour
 {
     public Button button;
     public GameObject contentResultContainer;
-    public GameCommandReceiver door;
 
     static public int currentId = 0;
     static public string currentCommand = string.Empty;
@@ -34,19 +33,11 @@ public class ButtonDownScript : MonoBehaviour
         if(button.name == "exitButton")
         {
             InteractPuzzleCrystalBox.forceInteractClose = true;
+            PuzzleManipulate.mustRestartPuzzle = true;
         }
 
         if (button.name == "startButton")
         {
-            //InteractPuzzleCrystalBox.forceInteractClose = true;
-            //SendGameCommand sendGameCommand = new SendGameCommand();
-
-            //sendGameCommand.interactionType = GameCommandType.Open;
-            //sendGameCommand.interactiveObject = door;
-            //sendGameCommand.coolDown = 1;
-            //sendGameCommand.oneShot = true;
-            //sendGameCommand.Send();
-
             PuzzleManipulate.startPuzzleControl = true;
             return;
         }

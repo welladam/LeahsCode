@@ -305,6 +305,7 @@
     <Compile Include="Assets\Scripts\Puzzles\PuzzleCrystalBox\CrystalPuzzleCollider.cs" />
     <Compile Include="Assets\Scripts\Puzzles\PuzzleCrystalBox\InteractPuzzleCrystalBox.cs" />
     <Compile Include="Assets\Scripts\Puzzles\PuzzleCrystalBox\PuzzleManipulate.cs" />
+    <Compile Include="Assets\Scripts\Puzzles\UI\ResultUI.cs" />
     <Compile Include="Assets\UIPuzzleController.cs" />
     <None Include="Assets\3DGameKit_Third-PartyNotice.txt" />
     <None Include="Assets\3DGamekit\Art\Shaders\Rock.shader" />

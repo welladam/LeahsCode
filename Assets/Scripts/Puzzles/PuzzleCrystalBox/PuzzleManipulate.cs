@@ -1,4 +1,5 @@
 ﻿using Gamekit3D;
+using Gamekit3D.GameCommands;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +11,11 @@ public class PuzzleManipulate : MonoBehaviour
     public GameObject puzzleBox2;
     public GameObject puzzleCrystal;
     public GameObject puzzleCrystalSimulate;
+    public GameObject puzzleMain;
+
+    public GameObject uIPuzzleWin;
+    public GameObject uIPuzzleFail;
+    public GameCommandReceiver door;
 
     public float defaultMovePositionCrystal = 0.12f;
     public float defaultMovePositionCrystalSimulate = 0.06f;
@@ -21,6 +27,13 @@ public class PuzzleManipulate : MonoBehaviour
     static public List<CommandPuzzle> listCommands = new List<CommandPuzzle>();
     static public bool startPuzzleControl = false;
     static public bool showNextStepTutorial = false;
+    static public bool mustRestartPuzzle = false;
+    static public bool mustFinishLevel = false;
+
+    static private GameObject puzzleBox1Source;
+    static private GameObject puzzleBox2Source;
+    static private GameObject puzzleCrystalSource;
+    static private GameObject puzzleCrystalSimulateSource;
 
     private List<GameObject> generatedObjects = new List<GameObject>();
     private TextMeshProUGUI currentTextSelected;
@@ -31,6 +44,16 @@ public class PuzzleManipulate : MonoBehaviour
         this.puzzleCrystalSimulate.SetActive(false);
         Color color = puzzleCrystalSimulate.GetComponent<Renderer>().material.color;
         puzzleCrystalSimulate.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 1);
+
+        puzzleBox1Source = Object.Instantiate(puzzleBox1, puzzleMain.transform);
+        puzzleBox2Source = Object.Instantiate(puzzleBox2, puzzleMain.transform);
+        puzzleCrystalSource = Object.Instantiate(puzzleCrystal, puzzleMain.transform);
+        puzzleCrystalSimulateSource = Object.Instantiate(puzzleCrystalSimulate, puzzleMain.transform);
+
+        puzzleBox1Source.SetActive(false);
+        puzzleBox2Source.SetActive(false);
+        puzzleCrystalSource.SetActive(false);
+        puzzleCrystalSimulateSource.SetActive(false);
     }
 
     // Update is called once per frame
@@ -38,6 +61,60 @@ public class PuzzleManipulate : MonoBehaviour
     {
         StartCoroutine(StartPuzzle());
         CommandSelected();
+        RestartLevel();
+        FinishLevel();
+    }
+
+    private void FinishLevel()
+    {
+        if (mustFinishLevel)
+        {
+            InteractPuzzleCrystalBox.forceInteractClose = true;
+            SendGameCommand sendGameCommand = new SendGameCommand();
+
+            sendGameCommand.interactionType = GameCommandType.Open;
+            sendGameCommand.interactiveObject = door;
+            sendGameCommand.coolDown = 1;
+            sendGameCommand.oneShot = true;
+            sendGameCommand.Send();
+            mustFinishLevel = false;
+        }
+    }
+
+    private void RestartLevel()
+    {
+        if (mustRestartPuzzle)
+        {
+            foreach (CommandPuzzle commandPuzzle in listCommands)
+            {
+                Destroy(commandPuzzle.panelResult);
+                commandPuzzle.panelResult = null;
+            }
+
+            listCommands.Clear();
+
+            for (int i = 0; i < generatedObjects.Count; i++)
+            {
+                Destroy(generatedObjects[i]);
+            }
+
+            Destroy(puzzleBox1);
+            Destroy(puzzleBox2);
+            Destroy(puzzleCrystal);
+            Destroy(puzzleCrystalSimulate);
+
+            puzzleBox1 = Object.Instantiate(puzzleBox1Source, puzzleMain.transform);
+            puzzleBox2 = Object.Instantiate(puzzleBox2Source, puzzleMain.transform);
+            puzzleCrystal = Object.Instantiate(puzzleCrystalSource, puzzleMain.transform);
+            puzzleCrystalSimulate = Object.Instantiate(puzzleCrystalSimulateSource, puzzleMain.transform);
+
+            puzzleBox1.SetActive(true);
+            puzzleBox2.SetActive(true);
+            puzzleCrystal.SetActive(true);
+            puzzleCrystalSimulate.SetActive(true);
+
+            mustRestartPuzzle = false;
+        }
     }
 
     public void CommandSelected()
@@ -150,7 +227,7 @@ public class PuzzleManipulate : MonoBehaviour
 
                             currentTextSelected = commandPuzzleMain.panelResult.GetComponentsInChildren<TextMeshProUGUI>()[j + 1];
                             currentTextSelected.fontSize = 30;
-                            currentTextSelected.color = new Color32(255, 112, 112, 255);
+                            currentTextSelected.color = new Color32(103, 255, 93, 255);
                             currentTextSelected.fontStyle = FontStyles.Bold;
                             this.puzzleCrystal.transform.position = this.getNewPositionCrystal(commandPuzzleMain.commandsFor[j].command);
                         }
@@ -158,7 +235,23 @@ public class PuzzleManipulate : MonoBehaviour
                 }
             }
 
-            listCommands.Clear();
+            yield return new WaitForSeconds(1);
+            this.ValidateFinishPuzzle();
+        }
+    }
+
+    private void ValidateFinishPuzzle()
+    {
+        Damageable d1 = puzzleBox1.GetComponentInChildren<Damageable>();
+        Damageable d2 = puzzleBox2.GetComponentInChildren<Damageable>();
+
+        if (d1.currentHitPoints >= 0 && d2.currentHitPoints >= 0)
+        {
+            uIPuzzleWin.SetActive(true);
+        }
+        else
+        {
+            uIPuzzleFail.SetActive(true);
         }
     }
 
@@ -170,21 +263,69 @@ public class PuzzleManipulate : MonoBehaviour
         if (command == "moveUp")
         {
             newPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystal, crystalPosition.z);
+            Damageable d = puzzleBox1.GetComponentInChildren<Damageable>();
+            if (d != null)
+            {
+                Damageable.DamageMessage damage = new Damageable.DamageMessage()
+                {
+                    amount = 999,
+                    damager = this,
+                    direction = Vector3.up,
+                };
+
+                d.ApplyDamage(damage);
+            }
         }
 
         if (command == "moveDown")
         {
             newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
+            Damageable d = puzzleBox1.GetComponentInChildren<Damageable>();
+            if (d != null)
+            {
+                Damageable.DamageMessage damage = new Damageable.DamageMessage()
+                {
+                    amount = 999,
+                    damager = this,
+                    direction = Vector3.up,
+                };
+
+                d.ApplyDamage(damage);
+            }
         }
 
         if (command == "turnRight")
         {
             newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
+            Damageable d = puzzleBox2.GetComponentInChildren<Damageable>();
+            if (d != null)
+            {
+                Damageable.DamageMessage damage = new Damageable.DamageMessage()
+                {
+                    amount = 999,
+                    damager = this,
+                    direction = Vector3.up,
+                };
+
+                d.ApplyDamage(damage);
+            }
         }
 
         if (command == "turnLeft")
         {
             newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
+            Damageable d = puzzleBox1.GetComponentInChildren<Damageable>();
+            if (d != null)
+            {
+                Damageable.DamageMessage damage = new Damageable.DamageMessage()
+                {
+                    amount = 999,
+                    damager = this,
+                    direction = Vector3.up,
+                };
+
+                d.ApplyDamage(damage);
+            }
         }
 
         if (command == "attack")

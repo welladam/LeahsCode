@@ -12,6 +12,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
 
     public LayerMask layers;
     public TextMesh enterTextButton;
+    public GameObject ellen;
 
     public Camera cameraOriginal;
     public Camera cameraFocus;
@@ -35,7 +36,8 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
         }
 
         if (!alreadyCompletedPuzzle && Input.GetButton("Interact") && hasPlayerInArea)
-        {              
+        {
+            ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y, ellen.transform.position.z - 2);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             PlayerInput.Instance.ReleaseControl();
