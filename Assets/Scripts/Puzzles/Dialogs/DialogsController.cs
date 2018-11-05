@@ -31,8 +31,12 @@ public class DialogsController : MonoBehaviour
     private List<string> listTextLevel01Step01 = new List<string>();
     private List<string> listTextLevel01Step02 = new List<string>();
 
+    private AudioSource audioData;
+
     private void Start()
     {
+        audioData = GetComponent<AudioSource>();
+
         listTextLevel01Step01.Add("Level01_Step1_INFO1");
         listTextLevel01Step01.Add("Level01_Step1_INFO2");
         listTextLevel01Step01.Add("Level01_Step1_INFO3");
@@ -46,12 +50,15 @@ public class DialogsController : MonoBehaviour
         listTextLevel01Step02.Add("Level01_Step2_INFO4");
         listTextLevel01Step02.Add("Level01_Step2_INFO5");
         listTextLevel01Step02.Add("Level01_Step2_INFO6");
+
+        listTextLevel01Step02.Add("Level01_Step2_INFO6");
     }
 
     private void Update()
     {
         if (isPlayerDialoging && Input.GetButtonDown("Interact"))
         {
+            audioData.Play();
             ManipulateNextLevel();
         }
     }
@@ -117,6 +124,14 @@ public class DialogsController : MonoBehaviour
         currentLevel = 1;
         currentStep = 2;
         cameraKidCaio.enabled = true;
+
+        ActivateCanvasWithTranslatedText(phraseKey);
+    }
+
+    public void ActiveDialogLevel01Step3(string phraseKey)
+    {
+        currentLevel = 1;
+        currentStep = 3;
 
         ActivateCanvasWithTranslatedText(phraseKey);
     }

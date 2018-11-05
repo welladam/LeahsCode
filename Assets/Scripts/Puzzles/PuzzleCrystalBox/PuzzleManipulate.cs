@@ -1,6 +1,5 @@
 ﻿using Gamekit3D;
 using Gamekit3D.GameCommands;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,20 +9,14 @@ public class PuzzleManipulate : MonoBehaviour
 {
     public GameObject puzzleBox1;
     public GameObject puzzleBox2;
-    public GameObject puzzleCrystal;
-    public GameObject puzzleCrystalSimulate;
     public GameObject puzzleMain;
 
     public GameObject uIPuzzleWin;
     public GameObject uIPuzzleFail;
     public GameCommandReceiver door;
 
-    public float defaultMovePositionCrystal = 0.12f;
-    public float defaultMovePositionCrystalSimulate = 0.06f;
-    public float defaultMinValueX = -1.0f;
-    public float defaultMaxValueX = -0.6f;
-    public float defaultMinValueY = 1.3f;
-    public float defaultMaxValueY = 1.7f;
+    public int sizeMatrix = 3;
+    public List<GameObject> listGameObjectFloors;
 
     static public List<CommandPuzzle> listCommands = new List<CommandPuzzle>();
     static public bool startPuzzleControl = false;
@@ -35,12 +28,14 @@ public class PuzzleManipulate : MonoBehaviour
 
     static private GameObject puzzleBox1Source;
     static private GameObject puzzleBox2Source;
-    static private GameObject puzzleCrystalSource;
-    static private GameObject puzzleCrystalSimulateSource;
 
     private List<GameObject> generatedObjects = new List<GameObject>();
     private TextMeshProUGUI currentTextSelected;
     private int delayTime = 1;
+
+    private int currentFloorX = 0;
+    private int currentFloorY = 0;
+    private GameObject[,] matrixFloors = new GameObject[3, 3];
 
     // Mission Objectives
     private static int boxesDesroyed = 2;
@@ -49,19 +44,25 @@ public class PuzzleManipulate : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        this.puzzleCrystalSimulate.SetActive(false);
-        Color color = puzzleCrystalSimulate.GetComponent<Renderer>().material.color;
-        puzzleCrystalSimulate.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 1);
+        int countListFloors = 0;
+
+        for(int i = 0; i < sizeMatrix; i++)
+        {
+            for(int j = 0; j < sizeMatrix; j++)
+            {
+                matrixFloors[j, i] = listGameObjectFloors[countListFloors];
+                countListFloors++;
+            }
+        }
+
+        //Color color = puzzleCrystalSimulate.GetComponent<Renderer>().material.color;
+        //puzzleCrystalSimulate.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 1);
 
         puzzleBox1Source = Object.Instantiate(puzzleBox1, puzzleMain.transform);
         puzzleBox2Source = Object.Instantiate(puzzleBox2, puzzleMain.transform);
-        puzzleCrystalSource = Object.Instantiate(puzzleCrystal, puzzleMain.transform);
-        puzzleCrystalSimulateSource = Object.Instantiate(puzzleCrystalSimulate, puzzleMain.transform);
 
         puzzleBox1Source.SetActive(false);
         puzzleBox2Source.SetActive(false);
-        puzzleCrystalSource.SetActive(false);
-        puzzleCrystalSimulateSource.SetActive(false);
     }
 
     // Update is called once per frame
@@ -94,6 +95,9 @@ public class PuzzleManipulate : MonoBehaviour
     {
         if (mustRestartPuzzle)
         {
+            GetCurrentCrystal().SetActive(false);
+            GetCurrentCrystalSimulator().SetActive(false);
+
             foreach (CommandPuzzle commandPuzzle in listCommands)
             {
                 Destroy(commandPuzzle.panelResult);
@@ -102,6 +106,11 @@ public class PuzzleManipulate : MonoBehaviour
 
             listCommands.Clear();
 
+            currentFloorX = 0;
+            currentFloorY = 0;
+
+            GetCurrentCrystal().SetActive(true);
+
             for (int i = 0; i < generatedObjects.Count; i++)
             {
                 Destroy(generatedObjects[i]);
@@ -109,18 +118,12 @@ public class PuzzleManipulate : MonoBehaviour
 
             Destroy(puzzleBox1);
             Destroy(puzzleBox2);
-            Destroy(puzzleCrystal);
-            Destroy(puzzleCrystalSimulate);
 
             puzzleBox1 = Object.Instantiate(puzzleBox1Source, puzzleMain.transform);
             puzzleBox2 = Object.Instantiate(puzzleBox2Source, puzzleMain.transform);
-            puzzleCrystal = Object.Instantiate(puzzleCrystalSource, puzzleMain.transform);
-            puzzleCrystalSimulate = Object.Instantiate(puzzleCrystalSimulateSource, puzzleMain.transform);
 
             puzzleBox1.SetActive(true);
             puzzleBox2.SetActive(true);
-            puzzleCrystal.SetActive(true);
-            puzzleCrystalSimulate.SetActive(true);
 
             mustRestartPuzzle = false;
         }
@@ -135,7 +138,10 @@ public class PuzzleManipulate : MonoBehaviour
                 Destroy(gameObject);
             }
 
-            this.puzzleCrystalSimulate.transform.position = this.puzzleCrystal.transform.position;
+            GetCurrentCrystalSimulator().SetActive(false);
+
+            currentFloorX = 0;
+            currentFloorY = 0;
 
             foreach (CommandPuzzle commandPuzzleMain in listCommands)
             {
@@ -146,55 +152,49 @@ public class PuzzleManipulate : MonoBehaviour
                         for (int j = 0; j < commandPuzzleMain.commandsFor.Count; j++)
                         {
                             CommandFor commandFor = commandPuzzleMain.commandsFor[j];
-                            Vector3 crystalPosition = this.puzzleCrystalSimulate.transform.position;
-                            Vector3 newPosition = this.puzzleCrystalSimulate.transform.position;
-
-                            Vector3 arrowPosition = new Vector3();
-                            string nameArrow = string.Empty;
-
+                            GameObject currentCrystalSimulator = GetCurrentCrystalSimulator();
+                            
                             if (commandFor.command == "moveUp")
                             {
-                                newPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystal, crystalPosition.z);
-                                nameArrow = "arrowUp";
-                                arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystalSimulate, crystalPosition.z);
+                                currentFloorY++;    
                             }
 
                             if (commandFor.command == "moveDown")
                             {
-                                newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
-                                nameArrow = "arrowDown";
-                                arrowPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystalSimulate, crystalPosition.z);
+                                currentFloorY--;
                             }
 
                             if (commandFor.command == "turnRight")
                             {
-                                newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
-                                nameArrow = "arrowRight";
-                                arrowPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystalSimulate, crystalPosition.y, crystalPosition.z);
+                                currentFloorX++;
                             }
 
                             if (commandFor.command == "turnLeft")
                             {
-                                newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
-                                nameArrow = "arrowLeft";
-                                arrowPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystalSimulate, crystalPosition.y, crystalPosition.z);
+                                currentFloorX--;
                             }
 
-                            if (newPosition != crystalPosition)
+                            if ((currentFloorX > 2 || currentFloorX < 0) || (currentFloorY > 2 || currentFloorY < 0))
                             {
-                                if ((newPosition.x <= defaultMinValueX || newPosition.x >= defaultMaxValueX) || (newPosition.y <= defaultMinValueY || newPosition.y >= defaultMaxValueY))
-                                {
-                                    commandPuzzleMain.commandsFor.RemoveAt(j);
-                                    return;
-                                }
-
-                                this.puzzleCrystalSimulate.SetActive(true);
-                                this.puzzleCrystalSimulate.transform.position = newPosition;
-
-                                GameObject arrow = Resources.Load("Prefabs/" + nameArrow, typeof(GameObject)) as GameObject;
-                                var prefab = Instantiate(arrow, arrowPosition, Quaternion.identity);
-                                generatedObjects.Add(prefab);
+                                commandPuzzleMain.commandsFor.RemoveAt(j);
+                                return;
                             }
+
+                            currentCrystalSimulator.SetActive(false);
+
+                            GameObject newCrystalSimulator = GetCurrentCrystalSimulator();
+                            Color color = newCrystalSimulator.GetComponent<Renderer>().material.color;
+                            newCrystalSimulator.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 1);
+
+                            newCrystalSimulator.SetActive(true);
+                            //GameObject arrow = Resources.Load("Prefabs/" + nameArrow, typeof(GameObject)) as GameObject;
+                            //var prefab = Instantiate(arrow, arrowPosition, Quaternion.identity);
+                            //if (defaultRotateY > 0)
+                            //{
+                            //    prefab.transform.Rotate(Vector3.up, defaultRotateY);
+                            //}
+                            //generatedObjects.Add(prefab);
+
                         }
                     }
                 }
@@ -204,18 +204,21 @@ public class PuzzleManipulate : MonoBehaviour
         showNextStepTutorial = false;
     }
 
-
     public IEnumerator StartPuzzle()
     {
         if (startPuzzleControl)
         {
             startPuzzleControl = false;
 
-            this.puzzleCrystalSimulate.SetActive(false);
             foreach (GameObject prefab in generatedObjects)
             {
                 Destroy(prefab);
             }
+
+            GetCurrentCrystalSimulator().SetActive(false);
+
+            currentFloorX = 0;
+            currentFloorY = 0;
 
             foreach (CommandPuzzle commandPuzzleMain in listCommands)
             {
@@ -269,7 +272,31 @@ public class PuzzleManipulate : MonoBehaviour
                             currentTextSelected.fontSize = 30;
                             currentTextSelected.color = new Color32(103, 255, 93, 255);
                             currentTextSelected.fontStyle = FontStyles.Bold;
-                            this.puzzleCrystal.transform.position = this.getNewPositionCrystal(commandPuzzleMain.commandsFor[j].command);
+
+                            GetCurrentCrystal().SetActive(false);
+
+                            string command = commandPuzzleMain.commandsFor[j].command;
+                            if (command == "moveUp")
+                            {
+                                currentFloorY++;
+                            }
+
+                            if (command == "moveDown")
+                            {
+                                currentFloorY--;
+                            }
+
+                            if (command == "turnRight")
+                            {
+                                currentFloorX++;
+                            }
+
+                            if (command == "turnLeft")
+                            {
+                                currentFloorX--;
+                            }
+
+                            GetCurrentCrystal().SetActive(true);
 
                             yield return new WaitForSeconds(delayTime);
                         }
@@ -280,6 +307,17 @@ public class PuzzleManipulate : MonoBehaviour
             yield return new WaitForSeconds(delayTime);
             this.ValidateFinishPuzzle();
         }
+    }
+
+
+    private GameObject GetCurrentCrystal()
+    {
+        return matrixFloors[currentFloorX, currentFloorY].transform.Find("PuzzleCrystal").gameObject;
+    }
+
+    private GameObject GetCurrentCrystalSimulator()
+    {
+        return matrixFloors[currentFloorX, currentFloorY].transform.Find("PuzzleCrystalSimulator").gameObject;
     }
 
     private void ConditionAction(CommandPuzzle commandPuzzleMain)
@@ -308,7 +346,8 @@ public class PuzzleManipulate : MonoBehaviour
                     d.ApplyDamage(damage);
                     boxesDesroyed--;
                 }
-            }catch(Exception ex) { }
+            }
+            catch (System.Exception ex) { }
         }
     }
 
@@ -322,33 +361,5 @@ public class PuzzleManipulate : MonoBehaviour
         {
             uIPuzzleFail.SetActive(true);
         }
-    }
-
-    private Vector3 getNewPositionCrystal(string command)
-    {
-        Vector3 crystalPosition = this.puzzleCrystal.transform.position;
-        Vector3 newPosition = crystalPosition;
-
-        if (command == "moveUp")
-        {
-            newPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystal, crystalPosition.z);
-        }
-
-        if (command == "moveDown")
-        {
-            newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
-        }
-
-        if (command == "turnRight")
-        {
-            newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
-        }
-
-        if (command == "turnLeft")
-        {
-            newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
-        }
-
-        return newPosition;
     }
 }

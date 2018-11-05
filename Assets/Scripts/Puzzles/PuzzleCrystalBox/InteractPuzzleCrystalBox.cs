@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Gamekit3D;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Collider))]
 public class InteractPuzzleCrystalBox : MonoBehaviour {
@@ -13,13 +14,13 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
     public LayerMask layers;
     public TextMesh enterTextButton;
     public GameObject ellen;
-
     public Camera cameraOriginal;
     public Camera cameraFocus;
-
     public GameObject uiPuzzle;
+    public bool mustOpenTutorialWhenStart = false;
 
     private bool hasPlayerInArea;
+    private bool mustHideEnterText = false;
 
 	// Use this for initialization
 	void Start () {
@@ -45,6 +46,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
             cameraFocus.enabled = true;
             this.uiPuzzle.SetActive(true);
             enterTextButton.gameObject.SetActive(false);
+            mustHideEnterText = true;
         }
 
         if (forceInteractClose || (Input.GetButton("Interact Close") && hasPlayerInArea))
@@ -57,6 +59,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
             this.uiPuzzle.SetActive(false);
             enterTextButton.gameObject.SetActive(true);
             forceInteractClose = false;
+            mustHideEnterText = false;
         }
     }
 
@@ -65,7 +68,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
     {
         if (0 != (layers.value & 1 << other.gameObject.layer))
         {
-            this.enterTextButton.gameObject.SetActive(true);
+            this.enterTextButton.gameObject.SetActive(!mustHideEnterText);
             this.hasPlayerInArea = true;
         }
     }

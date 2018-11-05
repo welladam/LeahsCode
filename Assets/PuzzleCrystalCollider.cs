@@ -24,14 +24,4 @@ public class PuzzleCrystalCollider : MonoBehaviour {
     {
         PuzzleManipulate.objectWithCrystalSamePosition = null;
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        PuzzleManipulate.objectWithCrystalSamePosition = collision.gameObject;
-    }
-
-    private void onCollisionExit(Collision collision)
-    {
-        PuzzleManipulate.objectWithCrystalSamePosition = null;
-    }
 }
