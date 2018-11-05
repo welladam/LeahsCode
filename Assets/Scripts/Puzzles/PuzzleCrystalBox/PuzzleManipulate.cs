@@ -1,5 +1,6 @@
 ﻿using Gamekit3D;
 using Gamekit3D.GameCommands;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -30,6 +31,8 @@ public class PuzzleManipulate : MonoBehaviour
     static public bool mustRestartPuzzle = false;
     static public bool mustFinishLevel = false;
 
+    static public GameObject objectWithCrystalSamePosition;
+
     static private GameObject puzzleBox1Source;
     static private GameObject puzzleBox2Source;
     static private GameObject puzzleCrystalSource;
@@ -37,6 +40,11 @@ public class PuzzleManipulate : MonoBehaviour
 
     private List<GameObject> generatedObjects = new List<GameObject>();
     private TextMeshProUGUI currentTextSelected;
+    private int delayTime = 1;
+
+    // Mission Objectives
+    private static int boxesDesroyed = 2;
+
 
     // Use this for initialization
     void Start()
@@ -69,6 +77,7 @@ public class PuzzleManipulate : MonoBehaviour
     {
         if (mustFinishLevel)
         {
+            InteractPuzzleCrystalBox.alreadyCompletedPuzzle = true;
             InteractPuzzleCrystalBox.forceInteractClose = true;
             SendGameCommand sendGameCommand = new SendGameCommand();
 
@@ -119,11 +128,11 @@ public class PuzzleManipulate : MonoBehaviour
 
     public void CommandSelected()
     {
-        if (showNextStepTutorial && listCommands.Count > 0)
+        if (showNextStepTutorial)
         {
-            for (int i = 0; i < generatedObjects.Count; i++)
+            foreach (GameObject gameObject in generatedObjects)
             {
-                Destroy(generatedObjects[i]);
+                Destroy(gameObject);
             }
 
             this.puzzleCrystalSimulate.transform.position = this.puzzleCrystal.transform.position;
@@ -210,14 +219,45 @@ public class PuzzleManipulate : MonoBehaviour
 
             foreach (CommandPuzzle commandPuzzleMain in listCommands)
             {
+                if (commandPuzzleMain.commandType == "if")
+                {
+                    if (currentTextSelected != null)
+                    {
+                        currentTextSelected.fontSize = 25;
+                        currentTextSelected.color = Color.white;
+                        currentTextSelected.fontStyle = FontStyles.Normal;
+                    }
+
+                    currentTextSelected = commandPuzzleMain.panelResult.GetComponentsInChildren<TextMeshProUGUI>()[2];
+                    currentTextSelected.fontSize = 30;
+                    currentTextSelected.color = new Color32(103, 255, 93, 255);
+                    currentTextSelected.fontStyle = FontStyles.Bold;
+
+                    yield return new WaitForSeconds(delayTime);
+
+                    this.ConditionAction(commandPuzzleMain);
+
+                    if (currentTextSelected != null)
+                    {
+                        currentTextSelected.fontSize = 25;
+                        currentTextSelected.color = Color.white;
+                        currentTextSelected.fontStyle = FontStyles.Normal;
+                    }
+
+                    currentTextSelected = commandPuzzleMain.panelResult.GetComponentsInChildren<TextMeshProUGUI>()[4];
+                    currentTextSelected.fontSize = 30;
+                    currentTextSelected.color = new Color32(103, 255, 93, 255);
+                    currentTextSelected.fontStyle = FontStyles.Bold;
+
+                    yield return new WaitForSeconds(delayTime);
+                }
+
                 if (commandPuzzleMain.commandType == "for")
                 {
                     for (int i = 0; i < commandPuzzleMain.countLoop; i++)
                     {
                         for (int j = 0; j < commandPuzzleMain.commandsFor.Count; j++)
                         {
-                            yield return new WaitForSeconds(1);
-
                             if (currentTextSelected != null)
                             {
                                 currentTextSelected.fontSize = 25;
@@ -230,22 +270,51 @@ public class PuzzleManipulate : MonoBehaviour
                             currentTextSelected.color = new Color32(103, 255, 93, 255);
                             currentTextSelected.fontStyle = FontStyles.Bold;
                             this.puzzleCrystal.transform.position = this.getNewPositionCrystal(commandPuzzleMain.commandsFor[j].command);
+
+                            yield return new WaitForSeconds(delayTime);
                         }
                     }
                 }
             }
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(delayTime);
             this.ValidateFinishPuzzle();
+        }
+    }
+
+    private void ConditionAction(CommandPuzzle commandPuzzleMain)
+    {
+        if (commandPuzzleMain.commandCondition == "foundBox" && commandPuzzleMain.command == "destroyBox")
+        {
+            try
+            {
+                Damageable d = objectWithCrystalSamePosition.GetComponentInChildren<Damageable>() == null ?
+                    objectWithCrystalSamePosition.GetComponentInParent<Damageable>() : objectWithCrystalSamePosition.GetComponentInChildren<Damageable>();
+
+                if (d == null)
+                {
+                    d = objectWithCrystalSamePosition.GetComponent<Damageable>();
+                }
+
+                if (d != null)
+                {
+                    Damageable.DamageMessage damage = new Damageable.DamageMessage()
+                    {
+                        amount = 999,
+                        damager = this,
+                        direction = Vector3.up,
+                    };
+
+                    d.ApplyDamage(damage);
+                    boxesDesroyed--;
+                }
+            }catch(Exception ex) { }
         }
     }
 
     private void ValidateFinishPuzzle()
     {
-        Damageable d1 = puzzleBox1.GetComponentInChildren<Damageable>();
-        Damageable d2 = puzzleBox2.GetComponentInChildren<Damageable>();
-
-        if (d1.currentHitPoints >= 0 && d2.currentHitPoints >= 0)
+        if (boxesDesroyed == 0)
         {
             uIPuzzleWin.SetActive(true);
         }
@@ -263,85 +332,21 @@ public class PuzzleManipulate : MonoBehaviour
         if (command == "moveUp")
         {
             newPosition = new Vector3(crystalPosition.x, crystalPosition.y + defaultMovePositionCrystal, crystalPosition.z);
-            Damageable d = puzzleBox1.GetComponentInChildren<Damageable>();
-            if (d != null)
-            {
-                Damageable.DamageMessage damage = new Damageable.DamageMessage()
-                {
-                    amount = 999,
-                    damager = this,
-                    direction = Vector3.up,
-                };
-
-                d.ApplyDamage(damage);
-            }
         }
 
         if (command == "moveDown")
         {
             newPosition = new Vector3(crystalPosition.x, crystalPosition.y - defaultMovePositionCrystal, crystalPosition.z);
-            Damageable d = puzzleBox1.GetComponentInChildren<Damageable>();
-            if (d != null)
-            {
-                Damageable.DamageMessage damage = new Damageable.DamageMessage()
-                {
-                    amount = 999,
-                    damager = this,
-                    direction = Vector3.up,
-                };
-
-                d.ApplyDamage(damage);
-            }
         }
 
         if (command == "turnRight")
         {
             newPosition = new Vector3(crystalPosition.x + defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
-            Damageable d = puzzleBox2.GetComponentInChildren<Damageable>();
-            if (d != null)
-            {
-                Damageable.DamageMessage damage = new Damageable.DamageMessage()
-                {
-                    amount = 999,
-                    damager = this,
-                    direction = Vector3.up,
-                };
-
-                d.ApplyDamage(damage);
-            }
         }
 
         if (command == "turnLeft")
         {
             newPosition = new Vector3(crystalPosition.x - defaultMovePositionCrystal, crystalPosition.y, crystalPosition.z);
-            Damageable d = puzzleBox1.GetComponentInChildren<Damageable>();
-            if (d != null)
-            {
-                Damageable.DamageMessage damage = new Damageable.DamageMessage()
-                {
-                    amount = 999,
-                    damager = this,
-                    direction = Vector3.up,
-                };
-
-                d.ApplyDamage(damage);
-            }
-        }
-
-        if (command == "attack")
-        {
-            //Damageable d = puzzleBox1.GetComponentInChildren<Damageable>();
-            //if (d != null)
-            //{
-            //    Damageable.DamageMessage damage = new Damageable.DamageMessage()
-            //    {
-            //        amount = 1,
-            //        damager = this,
-            //        direction = Vector3.up,
-            //    };
-
-            //    d.ApplyDamage(damage);
-            //}
         }
 
         return newPosition;

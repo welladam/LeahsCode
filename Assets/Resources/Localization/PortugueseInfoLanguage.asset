@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97933d85c6acddc4bb95f77ca8cc0280, type: 3}
+  m_Name: PortugueseInfoLanguage
+  m_EditorClassIdentifier: 
+  language: PT-BR
+  phrases:
+  - key: Level01_Step1_INFO1
+    value: "Bem vindo ao mundo dos Algoritmos, um lugar totalmente incr\xEDvel ....
+      mas \xFAltimamente estamos tendo muitos problemas com os Maliguenons! Acho que
+      voc\xEA pode nos ajudar! "
+  - key: Level01_Step1_INFO2
+    value: "Ah me desculpe! Me chamo Jonas! Estou aqui para te ajudar a encontrar
+      o mestre dos Maliguenons e ent\xE3o derrot\xE1-lo!"
+  - key: Level01_Step1_INFO3
+    value: "No lado esquerdo est\xE3o seus CORA\xC7\xD5ES! N\xF3s chamamos eles de
+      CONSTANTES! Eles s\xE3o imposs\xEDveis de serem modificados, dizem que nasceram
+      assim!"
+  - key: Level01_Step1_INFO4
+    value: "Todos os cora\xE7\xF5es juntos formam a sua VIDA! N\xF3s chamamos de VARI\xC1VEL
+      e podemos aumentar ou diminuir ela, dependendo de quantos cora\xE7\xF5es voc\xEA
+      tiver!"
+  - key: Level01_Step1_INFO5
+    value: "N\xF3s chamamos toda essa uni\xE3o de ATRIBUI\xC7\xC3O! Cada cora\xE7\xE3o
+      \xE9 importante para sua vida continuar cheia."
+  - key: Level01_Step1_INFO6
+    value: "Agora que voc\xEA sabe um pouco do nosso mundo, por favor v\xE1 at\xE9
+      a porta para continuarmos nossa jornada!"
+  - key: 
+    value: 
+  - key: Level01_Step2_INFO1
+    value: "Muito obrigado! Voc\xEA me salvou desses Maliguenons ..... ops, meu nome
+      \xE9 Caio, muito prazer! Vou te ajudar tamb\xE9m nessa jornada!"
+  - key: Level01_Step2_INFO2
+    value: "Voc\xEA percebeu que a cada Maliguenon que \xE9 destruido voc\xEA ganha
+      moedas de ouro?"
+  - key: Level01_Step2_INFO3
+    value: "Como o Jonas falou antes, cada moeda \xE9 uma CONSTANTE. Elas sempre ter\xE3o
+      o mesmo valor e n\xE3o adianta tentar modificar elas!"
+  - key: Level01_Step2_INFO4
+    value: "Utilizando ATRIBUI\xC7\xC3O, n\xF3s juntamos todas as moedas e com isso
+      voc\xEA ir\xE1 ter a sua Bolsa de Moedas."
+  - key: Level01_Step2_INFO5
+    value: "Aqui n\xF3s chamamos essa bolsa tamb\xE9m de VARI\xC1VEL, pois voc\xEA
+      pode ter diiiiversas moedas (ou at\xE9 mesmo nenhuma)!"
+  - key: Level01_Step2_INFO6
+    value: "Agora n\xF3s temos que resolver o mesterioso engima da porta para poder
+      liberar ela! V\xE1 at\xE9 o lado dela para descobrir qual \xE9 o engima!"
+  - key: 
+    value: 
+  - key: 
+    value: 

@@ -7,6 +7,8 @@ public class CommandPuzzle  {
     public string commandName;
     public string commandType;
     public string commandTypeName;
+    public string commandCondition;
+    public string commandConditionName;
     public List<CommandFor> commandsFor = new List<CommandFor>();
     public GameObject panelResult;
 

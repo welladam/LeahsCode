@@ -3,17 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrystalPuzzleCollider : MonoBehaviour {
+public class CrystalPuzzleCollider : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -25,8 +28,9 @@ public class CrystalPuzzleCollider : MonoBehaviour {
             direction = Vector3.up,
         };
 
-        if(d != null) { 
-        d.ApplyDamage(damage);
-            }
+        if (d != null)
+        {
+            d.ApplyDamage(damage);
+        }
     }
 }
