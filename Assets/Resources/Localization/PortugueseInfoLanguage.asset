@@ -66,5 +66,6 @@ MonoBehaviour:
     value: 
   - key: 
     value: 
-  - key: 
-    value: 
+  - key: NumMaxActionsAllowed_INFO
+    value: "Os Maliguenons nos bloquearam para apenas usarmos no m\xE1ximo 3 a\xE7\xF5es
+      por Repeti\xE7\xE3o!"

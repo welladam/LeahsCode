@@ -7,20 +7,22 @@ using UnityEngine;
 
 public class DialogsController : MonoBehaviour
 {
+    public static bool isPlayerDialoging = false;
+
     public Animator animator;
     public GameObject dialogTextCanvas;
     public TextMeshProUGUI textMeshProUGUI;
     public Camera cameraOriginal;
     public Camera cameraKidJonas;
     public Camera cameraKidCaio;
-
     public GameObject moneyCanvas;
-
     public GameCommandReceiver doorStepLevel01Step01;
+    public List<GameObject> listMonster;
+
+    public bool isWarningMessage = false;
 
     protected Coroutine m_DeactivationCoroutine;
-
-    private static bool isPlayerDialoging = false;
+    
     private static string currentText = string.Empty;
     private static int currentLevel = 0;
     private static int currentStep = 0;
@@ -30,6 +32,8 @@ public class DialogsController : MonoBehaviour
 
     private List<string> listTextLevel01Step01 = new List<string>();
     private List<string> listTextLevel01Step02 = new List<string>();
+
+    private bool isPlayerWarning = false;
 
     private AudioSource audioData;
 
@@ -60,6 +64,12 @@ public class DialogsController : MonoBehaviour
         {
             audioData.Play();
             ManipulateNextLevel();
+        }
+
+        if (isPlayerWarning && isWarningMessage)
+        {
+            DeactivateCanvasWithDelay(5f);
+            isPlayerWarning = false;
         }
     }
 
@@ -102,12 +112,19 @@ public class DialogsController : MonoBehaviour
                 return;
             }
         }
+
+        DeactivateCanvasWithDelay(0f);
     }
 
     IEnumerator SetAnimatorParameterWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         animator.SetBool(m_HashActivePara, false);
+    }
+
+    public void ActiveDialogMaxActionsAllowed()
+    {
+        ActivateCanvasWithTranslatedText("NumMaxActionsAllowed_INFO");
     }
 
     public void ActiveDialogLevel01(string phraseKey)
@@ -121,11 +138,30 @@ public class DialogsController : MonoBehaviour
 
     public void ActiveDialogLevel01Step2(string phraseKey)
     {
-        currentLevel = 1;
-        currentStep = 2;
-        cameraKidCaio.enabled = true;
+        bool canGoToNextStep = true;
 
-        ActivateCanvasWithTranslatedText(phraseKey);
+        listMonster.ForEach(monster => { if (monster != null) canGoToNextStep = false; });
+
+        if (canGoToNextStep)
+        {
+            currentLevel = 1;
+            currentStep = 2;
+            cameraKidCaio.enabled = true;
+
+            ActivateCanvasWithTranslatedText(phraseKey);
+        }
+    }
+
+    public void ActiveTutorialIFPuzzleCrystalBoxLevel01Step02(GameObject tutorialIFPuzzleCrystalBox)
+    {
+        bool canActiveThePuzzle = true;
+
+        listMonster.ForEach(monster => { if (monster != null) canActiveThePuzzle = false; });
+
+        if(canActiveThePuzzle)
+        {
+            tutorialIFPuzzleCrystalBox.SetActive(true);
+        }
     }
 
     public void ActiveDialogLevel01Step3(string phraseKey)
@@ -139,7 +175,15 @@ public class DialogsController : MonoBehaviour
     private void ActivateCanvasWithTranslatedText(string phraseKey)
     {
         currentText = phraseKey;
-        isPlayerDialoging = true;
+
+        if (isWarningMessage)
+        {
+            isPlayerWarning = true;
+        }
+        else
+        {
+            isPlayerDialoging = true;
+        }
 
         if (m_DeactivationCoroutine != null)
         {
@@ -150,9 +194,25 @@ public class DialogsController : MonoBehaviour
         gameObject.SetActive(true);
         animator.SetBool(m_HashActivePara, true);
         textMeshProUGUI.text = Translator.Instance[phraseKey];
-        dialogTextCanvas.SetActive(true);
-        PlayerInput.Instance.ReleaseControl();
-        cameraOriginal.enabled = false;
+
+        if (!isWarningMessage)
+        {
+            dialogTextCanvas.SetActive(true);
+            PlayerInput.Instance.ReleaseControl();
+            cameraOriginal.enabled = false;
+        }
+    }
+
+    public void DesactivateDialogLevel01Step02(GameObject infoZone)
+    {
+        bool canDesativateStep = true;
+
+        listMonster.ForEach(monster => { if (monster != null) canDesativateStep = false; });
+
+        if(canDesativateStep)
+        {
+            infoZone.SetActive(false);
+        }
     }
 
     public void DesactiveDialogLevel01(float delay = 0f)
@@ -170,9 +230,18 @@ public class DialogsController : MonoBehaviour
         currentStep = 0;
         currentIndexTextStep = 0;
 
-        dialogTextCanvas.SetActive(false);
-        PlayerInput.Instance.GainControl();
-        cameraOriginal.enabled = true;
+        if (dialogTextCanvas != null)
+        {
+            dialogTextCanvas.SetActive(false);
+        }
+
+        if (!isWarningMessage)
+        {
+            PlayerInput.Instance.GainControl();
+            cameraOriginal.enabled = true;
+        }
+
         isPlayerDialoging = false;
     }
+
 }

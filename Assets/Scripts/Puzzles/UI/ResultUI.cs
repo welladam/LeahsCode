@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Gamekit3D;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Events;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,6 +13,8 @@ namespace Gamekit3D
     public class ResultUI : MonoBehaviour
     {
         public GameObject resultCanvas;
+
+        public UnityEvent OnPuzzleClosed;
 
         protected bool m_InPause;
         protected PlayableDirector[] m_Directors;
@@ -25,8 +28,7 @@ namespace Gamekit3D
         {
             m_InPause = true;
             SwitchPauseState();
-            PuzzleManipulate.mustRestartPuzzle = true;
-            InteractPuzzleCrystalBox.forceInteractClose = true;
+            OnPuzzleClosed.Invoke();
         }
 
         public void ContinueLevel()

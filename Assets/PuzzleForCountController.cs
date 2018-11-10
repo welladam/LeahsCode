@@ -1,49 +1,44 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PuzzleForCountController : MonoBehaviour
 {
 
-    public GameObject button;
-    public TextMesh counter;
+    public TextMeshProUGUI counter;
 
     // Use this for initialization
     void Start()
     {
-
+        ButtonDownScript.currentNumberLoopForCommand = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        counter.text = ButtonDownScript.currentNumberLoopForCommand.ToString();
     }
 
-    private void OnMouseUpAsButton()
+    public void IncreaseCounter()
     {
-        if (button.name == "nextCountLoop")
-        {
-            int currentCount = int.Parse(counter.text);
-            currentCount++;
+        int currentCount = int.Parse(counter.text);
+        currentCount++;
 
-            if (currentCount == 10)
-                return;
+        if (currentCount == 10)
+            return;
 
-            ButtonDownScript.currentNumberLoopForCommand = currentCount;
-            counter.text = currentCount.ToString();
-        }
+        ButtonDownScript.currentNumberLoopForCommand = currentCount;
+    }
 
-        if (button.name == "previousCountLoop")
-        {
-            int currentCount = int.Parse(counter.text);
-            currentCount--;
+    public void DecreaseCounter()
+    {
+        int currentCount = int.Parse(counter.text);
+        currentCount--;
 
-            if (currentCount == 0)
-                return;
+        if (currentCount == 0)
+            return;
 
-            ButtonDownScript.currentNumberLoopForCommand = currentCount;
-            counter.text = currentCount.ToString();
-        }
+        ButtonDownScript.currentNumberLoopForCommand = currentCount;
     }
 }

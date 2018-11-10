@@ -8,8 +8,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider))]
 public class InteractPuzzleCrystalBox : MonoBehaviour {
 
-    public static bool forceInteractClose = false;
-    public static bool alreadyCompletedPuzzle = false;
+    public static bool isInPuzzleGame = false;
 
     public LayerMask layers;
     public TextMesh enterTextButton;
@@ -18,9 +17,13 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
     public Camera cameraFocus;
     public GameObject uiPuzzle;
     public bool mustOpenTutorialWhenStart = false;
+    public bool alreadyCompletedPuzzle = false;
+
+    public UnityEvent OnPlayerInArea;
 
     private bool hasPlayerInArea;
     private bool mustHideEnterText = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -36,9 +39,9 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
             enterTextButton.text = "Você já completou esse enigma!";
         }
 
-        if (!alreadyCompletedPuzzle && Input.GetButton("Interact") && hasPlayerInArea)
+        if (!isInPuzzleGame && !alreadyCompletedPuzzle && Input.GetButton("Interact") && hasPlayerInArea)
         {
-            ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y, ellen.transform.position.z - 2);
+            ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y, ellen.transform.position.z - 0.05f);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             PlayerInput.Instance.ReleaseControl();
@@ -46,23 +49,18 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
             cameraFocus.enabled = true;
             this.uiPuzzle.SetActive(true);
             enterTextButton.gameObject.SetActive(false);
-            mustHideEnterText = true;
-        }
 
-        if (forceInteractClose || (Input.GetButton("Interact Close") && hasPlayerInArea))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            PlayerInput.Instance.GainControl();
-            cameraOriginal.enabled = true;
-            cameraFocus.enabled = false;
-            this.uiPuzzle.SetActive(false);
-            enterTextButton.gameObject.SetActive(true);
-            forceInteractClose = false;
-            mustHideEnterText = false;
+            mustHideEnterText = true;
+            isInPuzzleGame = true;
+
+            if (mustOpenTutorialWhenStart)
+            {
+                ButtonDownScript.forceOpenIfTutorial = true;
+            }
+
+            PuzzleManipulate.mustRestartPuzzle = true;
         }
     }
-
 
     void OnTriggerEnter(Collider other)
     {
@@ -70,6 +68,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
         {
             this.enterTextButton.gameObject.SetActive(!mustHideEnterText);
             this.hasPlayerInArea = true;
+            OnPlayerInArea.Invoke();
         }
     }
 
@@ -79,6 +78,26 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
         {
             this.enterTextButton.gameObject.SetActive(false);
             this.hasPlayerInArea = false;
+            OnPlayerInArea.Invoke();
         }
+    }
+
+    public void AlreadyCompletedPuzzle()
+    {
+        alreadyCompletedPuzzle = true;
+    }
+
+    public void ClosePuzzle()
+    {      
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        PlayerInput.Instance.GainControl();
+        cameraOriginal.enabled = true;
+        cameraFocus.enabled = false;
+        this.uiPuzzle.SetActive(false);
+        enterTextButton.gameObject.SetActive(true);
+        mustHideEnterText = false;
+        isInPuzzleGame = false;
+        PuzzleManipulate.mustRestartPuzzle = true;
     }
 }
