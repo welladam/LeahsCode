@@ -25,7 +25,8 @@ public class PuzzleManipulate : MonoBehaviour
     public bool mustFoundKey = false;
     public List<GameObject> listFloorsCantPass;
 
-    public int sizeMatrix = 3;
+    public int sizeXMatrix = 3;
+    public int sizeYMatrix = 3;
     public List<GameObject> listGameObjectFloors;
 
     public UnityEvent OnPuzzleCompleted;
@@ -48,12 +49,13 @@ public class PuzzleManipulate : MonoBehaviour
     private GameObject puzzleBox2Source = null;
 
     private List<GameObject> generatedObjects = new List<GameObject>();
+    private List<GameObject> generatedPanelsObjects = new List<GameObject>();
     private TextMeshProUGUI currentTextSelected;
     private int delayTime = 1;
 
     private int currentFloorX = 0;
     private int currentFloorY = 0;
-    private GameObject[,] matrixFloors = new GameObject[3, 3];
+    private GameObject[,] matrixFloors;
 
     // Mission Objectives
     private int boxesDesroyed = 0;
@@ -64,12 +66,13 @@ public class PuzzleManipulate : MonoBehaviour
     void Start()
     {
         boxesDesroyed = countBoxMustDetroy;
+        matrixFloors = new GameObject[sizeXMatrix, sizeYMatrix];
 
         int countListFloors = 0;
 
-        for (int i = 0; i < sizeMatrix; i++)
+        for (int i = 0; i < sizeYMatrix; i++)
         {
-            for (int j = 0; j < sizeMatrix; j++)
+            for (int j = 0; j < sizeXMatrix; j++)
             {
                 matrixFloors[j, i] = listGameObjectFloors[countListFloors];
                 countListFloors++;
@@ -193,14 +196,8 @@ public class PuzzleManipulate : MonoBehaviour
         if (mustRestartPuzzle && hasPlayerInArea)
         {
             ClearAllCrystals();
-
-            foreach (CommandPuzzle commandPuzzle in listCommands)
-            {
-                Destroy(commandPuzzle.panelResult);
-                commandPuzzle.panelResult = null;
-            }
-
             ClearResultContent();
+
             listCommands.Clear();
 
             currentFloorX = 0;
@@ -235,10 +232,14 @@ public class PuzzleManipulate : MonoBehaviour
     {
         if (showNextStepTutorial && hasPlayerInArea)
         {
+            showNextStepTutorial = false;
+
             foreach (GameObject gameObject in generatedObjects)
             {
                 Destroy(gameObject);
             }
+
+            this.ClearResultContent();
 
             GetCurrentCrystalSimulator().SetActive(false);
 
@@ -282,7 +283,8 @@ public class PuzzleManipulate : MonoBehaviour
                                 ClearAndCreateResultContent();
                                 currentFloorX = 0;
                                 currentFloorY = 0;
-                                break;
+                                showNextStepTutorial = true;
+                                return;
                             }
 
                             currentCrystalSimulator.SetActive(false);
@@ -298,8 +300,6 @@ public class PuzzleManipulate : MonoBehaviour
                     }
                 }
             }
-
-            showNextStepTutorial = false;
         }
     }
 
@@ -520,9 +520,9 @@ public class PuzzleManipulate : MonoBehaviour
 
     private void ClearAllCrystals()
     {
-        for (int i = 0; i < sizeMatrix; i++)
+        for (int i = 0; i < sizeYMatrix; i++)
         {
-            for (int j = 0; j < sizeMatrix; j++)
+            for (int j = 0; j < sizeXMatrix; j++)
             {
                 GetCurrentCrystal(j, i).SetActive(false);
                 GetCurrentCrystalSimulator(j, i).SetActive(false);
@@ -532,7 +532,7 @@ public class PuzzleManipulate : MonoBehaviour
 
     private void createResultItems()
     {
-        foreach (CommandPuzzle commandPuzzle in PuzzleManipulate.listCommands)
+        foreach (CommandPuzzle commandPuzzle in listCommands)
         {
             GameObject panel = new GameObject("Panel");
             panel.AddComponent<CanvasRenderer>();
@@ -686,27 +686,22 @@ public class PuzzleManipulate : MonoBehaviour
 
             panel.transform.SetParent(panelGameObject.transform, false);
 
+            generatedPanelsObjects.Add(panel);
             commandPuzzle.panelResult = panel;
         }
     }
 
     public void ClearAndCreateResultContent()
     {
-        foreach (CommandPuzzle commandPuzzle in listCommands)
-        {
-            Destroy(commandPuzzle.panelResult);
-            commandPuzzle.panelResult = null;
-        }
-
+        this.ClearResultContent();
         this.createResultItems();
     }
 
     public void ClearResultContent()
     {
-        foreach (CommandPuzzle commandPuzzle in listCommands)
+        foreach (GameObject panel in generatedPanelsObjects)
         {
-            Destroy(commandPuzzle.panelResult);
-            commandPuzzle.panelResult = null;
+            Destroy(panel);
         }
     }
 }

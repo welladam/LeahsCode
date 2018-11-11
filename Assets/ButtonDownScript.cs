@@ -66,8 +66,6 @@ public class ButtonDownScript : MonoBehaviour
 
         if (button.name == "backButton")
         {
-            PuzzleManipulate.refreshResultContentPanel = true;
-
             if (PuzzleManipulate.listCommands.Count > 0)
             {
                 CommandPuzzle lastCommand = PuzzleManipulate.listCommands[PuzzleManipulate.listCommands.Count - 1];
