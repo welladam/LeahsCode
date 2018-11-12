@@ -29,6 +29,9 @@ public class PuzzleManipulate : MonoBehaviour
     public int sizeYMatrix = 3;
     public List<GameObject> listGameObjectFloors;
 
+    public int maxCommands3Stars;
+    public int maxCommands2Stars;
+
     public UnityEvent OnPuzzleCompleted;
     public UnityEvent OnPuzzleClosed;
     public UnityEvent OnValidateNumMaxActionsAllowed;
@@ -40,6 +43,7 @@ public class PuzzleManipulate : MonoBehaviour
     static public bool mustRestartPuzzle = false;
     static public bool mustFinishLevel = false;
     static public bool refreshResultContentPanel = false;
+    static public int starsPuzzleFinished = 0;
 
     static public GameObject objectWithCrystalSamePosition;
 
@@ -101,7 +105,7 @@ public class PuzzleManipulate : MonoBehaviour
         FinishLevel();
         ControlCrystal();
 
-        if (refreshResultContentPanel)
+        if (refreshResultContentPanel && hasPlayerInArea)
         {
             ClearAndCreateResultContent();
             refreshResultContentPanel = false;
@@ -115,7 +119,7 @@ public class PuzzleManipulate : MonoBehaviour
 
     private void ControlCrystal()
     {
-        if (mustStartIfTutorial && InteractPuzzleCrystalBox.isInPuzzleGame)
+        if (mustStartIfTutorial && InteractPuzzleCrystalBox.isInPuzzleGame && hasPlayerInArea)
         {
             bool mustChangePosition = false;
 
@@ -239,8 +243,6 @@ public class PuzzleManipulate : MonoBehaviour
                 Destroy(gameObject);
             }
 
-            this.ClearResultContent();
-
             GetCurrentCrystalSimulator().SetActive(false);
 
             currentFloorX = 0;
@@ -277,13 +279,13 @@ public class PuzzleManipulate : MonoBehaviour
                                 currentFloorX--;
                             }
 
-                            if ((currentFloorX > 2 || currentFloorX < 0) || (currentFloorY > 2 || currentFloorY < 0) || !ValidateMustAddCommand(j))
+                            if ((currentFloorX >= sizeXMatrix || currentFloorX < 0) || (currentFloorY >= sizeYMatrix || currentFloorY < 0) || !ValidateMustAddCommand(j))
                             {
                                 commandPuzzleMain.commandsFor.RemoveAt(j);
-                                ClearAndCreateResultContent();
+                                ClearOnlyCrystalSimulators();
                                 currentFloorX = 0;
                                 currentFloorY = 0;
-                                showNextStepTutorial = true;
+                                VerifyMustDeleteCommand(commandPuzzleMain);
                                 return;
                             }
 
@@ -295,11 +297,12 @@ public class PuzzleManipulate : MonoBehaviour
 
                             newCrystalSimulator.SetActive(true);
                             showNextStepTutorial = false;
-                            ClearAndCreateResultContent();
                         }
                     }
                 }
             }
+
+            this.ClearAndCreateResultContent();
         }
     }
 
@@ -368,7 +371,7 @@ public class PuzzleManipulate : MonoBehaviour
                                 currentTextSelected.fontStyle = FontStyles.Normal;
                             }
 
-                            currentTextSelected = commandPuzzleMain.panelResult.GetComponentsInChildren<TextMeshProUGUI>()[j + 1];
+                            currentTextSelected = commandPuzzleMain.panelResult.GetComponentsInChildren<TextMeshProUGUI>()[j + 2];
                             currentTextSelected.fontSize = 30;
                             currentTextSelected.color = new Color32(103, 255, 93, 255);
                             currentTextSelected.fontStyle = FontStyles.Bold;
@@ -518,6 +521,17 @@ public class PuzzleManipulate : MonoBehaviour
         }
     }
 
+    private void ClearOnlyCrystalSimulators()
+    {
+        for (int i = 0; i < sizeYMatrix; i++)
+        {
+            for (int j = 0; j < sizeXMatrix; j++)
+            {
+                GetCurrentCrystalSimulator(j, i).SetActive(false);
+            }
+        }
+    }
+
     private void ClearAllCrystals()
     {
         for (int i = 0; i < sizeYMatrix; i++)
@@ -564,8 +578,6 @@ public class PuzzleManipulate : MonoBehaviour
 
             ContentSizeFitter textTitleContentSizeFitter = textTitle.AddComponent<ContentSizeFitter>();
             textTitleContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-            string commandTypeText = commandPuzzle.commandType == "for" ? commandPuzzle.commandTypeName + " - Contador: " + commandPuzzle.countLoop : commandPuzzle.commandTypeName;
 
             TextMeshProUGUI textTitleMeshPro = textTitle.AddComponent<TextMeshProUGUI>();
             textTitleMeshPro.text = commandPuzzle.commandTypeName;
@@ -647,7 +659,7 @@ public class PuzzleManipulate : MonoBehaviour
                 VerticalLayoutGroup commandTextVerticalLayoutGroup = commandText.AddComponent<VerticalLayoutGroup>();
                 commandTextVerticalLayoutGroup.padding.top = 10;
                 commandTextVerticalLayoutGroup.padding.bottom = 20;
-                commandTextVerticalLayoutGroup.padding.left = 60;
+                commandTextVerticalLayoutGroup.padding.left = 20;
                 commandTextVerticalLayoutGroup.padding.right = 10;
 
                 ContentSizeFitter commandTextContentSizeFitter = commandText.AddComponent<ContentSizeFitter>();
@@ -661,6 +673,27 @@ public class PuzzleManipulate : MonoBehaviour
             }
             else if (commandPuzzle.commandType == "for")
             {
+                GameObject textSubTitle = new GameObject("TextMeshProUGUI");
+                textSubTitle.AddComponent<CanvasRenderer>();
+                textSubTitle.AddComponent<RectTransform>();
+
+                VerticalLayoutGroup textSubTitleVerticalLayoutGroup = textSubTitle.AddComponent<VerticalLayoutGroup>();
+                textSubTitleVerticalLayoutGroup.padding.top = 0;
+                textSubTitleVerticalLayoutGroup.padding.bottom = 40;
+                textSubTitleVerticalLayoutGroup.padding.left = 10;
+                textSubTitleVerticalLayoutGroup.padding.right = 10;
+
+                ContentSizeFitter textSubTitleContentSizeFitter = textSubTitle.AddComponent<ContentSizeFitter>();
+                textSubTitleContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+                TextMeshProUGUI textCounterMeshPro = textSubTitle.AddComponent<TextMeshProUGUI>();
+                textCounterMeshPro.text = "Contador: " + commandPuzzle.countLoop;
+                textCounterMeshPro.fontStyle = FontStyles.Bold;
+                textCounterMeshPro.color = Color.red;
+                textCounterMeshPro.fontSize = 30;
+
+                textCounterMeshPro.transform.SetParent(panel.transform, false);
+
                 foreach (CommandFor commandFor in commandPuzzle.commandsFor)
                 {
                     GameObject commandText = new GameObject("TextMeshProUGUI");
@@ -686,8 +719,8 @@ public class PuzzleManipulate : MonoBehaviour
 
             panel.transform.SetParent(panelGameObject.transform, false);
 
-            generatedPanelsObjects.Add(panel);
             commandPuzzle.panelResult = panel;
+            generatedPanelsObjects.Add(panel);
         }
     }
 
@@ -702,6 +735,39 @@ public class PuzzleManipulate : MonoBehaviour
         foreach (GameObject panel in generatedPanelsObjects)
         {
             Destroy(panel);
+        }
+    }
+
+    private void VerifyMustDeleteCommand(CommandPuzzle commandPuzzle)
+    {
+        if (commandPuzzle.commandsFor.Count <= 0)
+        {
+            listCommands.Remove(commandPuzzle);
+        }
+
+        showNextStepTutorial = true;
+    }
+
+    public void GetQtdStarsPuzzleFinished()
+    {
+        if (hasPlayerInArea)
+        {
+            int numCommands = listCommands.Count;
+
+            if (numCommands <= maxCommands3Stars)
+            {
+                starsPuzzleFinished = 3;
+            }
+            else if (numCommands <= maxCommands2Stars)
+            {
+                starsPuzzleFinished = 2;
+            }
+            else
+            {
+                starsPuzzleFinished = 1;
+            }
+
+            UIPuzzleWinController.mustUpdateWinMenu = true;
         }
     }
 }

@@ -14,23 +14,22 @@ MonoBehaviour:
   language: PT-BR
   phrases:
   - key: Level01_Step1_INFO1
-    value: "Bem vindo ao mundo dos Algoritmos, um lugar totalmente incr\xEDvel ....
-      mas \xFAltimamente estamos tendo muitos problemas com os Maliguenons! Acho que
+    value: "Bem vindo ao mundo dos Algoritmos, me chamo Jonas! Esse lugar \xE9 incr\xEDvel
+      mas ultimamente estamos tendo muitos problemas com os Maliguenons! Acho que
       voc\xEA pode nos ajudar! "
   - key: Level01_Step1_INFO2
-    value: "Ah me desculpe! Me chamo Jonas! Estou aqui para te ajudar a encontrar
-      o mestre dos Maliguenons e ent\xE3o derrot\xE1-lo!"
+    value: "Irei te orientar a encontrar o mestre dos Maliguenons e para ent\xE3o
+      derrot\xE1-lo!"
   - key: Level01_Step1_INFO3
-    value: "No lado esquerdo est\xE3o seus CORA\xC7\xD5ES! N\xF3s chamamos eles de
-      CONSTANTES! Eles s\xE3o imposs\xEDveis de serem modificados, dizem que nasceram
-      assim!"
+    value: "No lado esquerdo est\xE1 a sua VIDA! Chamamos ela de VARI\xC1VEL. Ela
+      pode ser alterada a qualquer momento! Mas cuidado, chegando a zero voc\xEA ir\xE1
+      desmaiar! "
   - key: Level01_Step1_INFO4
-    value: "Todos os cora\xE7\xF5es juntos formam a sua VIDA! N\xF3s chamamos de VARI\xC1VEL
-      e podemos aumentar ou diminuir ela, dependendo de quantos cora\xE7\xF5es voc\xEA
-      tiver!"
+    value: "Os n\xFAmeros ao lado da sua VIDA determina a quantidade de cora\xE7\xF5es
+      que voc\xEA tem! Chamamos eles de CONSTANTES."
   - key: Level01_Step1_INFO5
-    value: "N\xF3s chamamos toda essa uni\xE3o de ATRIBUI\xC7\xC3O! Cada cora\xE7\xE3o
-      \xE9 importante para sua vida continuar cheia."
+    value: "Quando voc\xEA ganha ou perde constantes de cora\xE7\xF5es, a vari\xE1vel
+      vida \xE9 modificada. Chamamos essa a\xE7\xE3o de ATRIBUI\xC7\xC3O."
   - key: Level01_Step1_INFO6
     value: "Agora que voc\xEA sabe um pouco do nosso mundo, por favor v\xE1 at\xE9
       a porta para continuarmos nossa jornada!"
@@ -46,18 +45,29 @@ MonoBehaviour:
     value: "Como o Jonas falou antes, cada moeda \xE9 uma CONSTANTE. Elas sempre ter\xE3o
       o mesmo valor e n\xE3o adianta tentar modificar elas!"
   - key: Level01_Step2_INFO4
-    value: "Utilizando ATRIBUI\xC7\xC3O, n\xF3s juntamos todas as moedas e com isso
-      voc\xEA ir\xE1 ter a sua Bolsa de Moedas."
+    value: "Utilizando ATRIBUI\xC7\xC3O, n\xF3s juntamos todas as moedas que voc\xEA
+      ganhou a sua Bolsa!"
   - key: Level01_Step2_INFO5
-    value: "Aqui n\xF3s chamamos essa bolsa tamb\xE9m de VARI\xC1VEL, pois voc\xEA
-      pode ter diiiiversas moedas (ou at\xE9 mesmo nenhuma)!"
+    value: "Aqui n\xF3s tamb\xE9m chamamos essa bolsa de moedas de VARI\xC1VEL, pois
+      voc\xEA pode ter diiiiversas moedas!"
   - key: Level01_Step2_INFO6
     value: "Agora n\xF3s temos que resolver o mesterioso engima da porta para poder
       liberar ela! V\xE1 at\xE9 o lado dela para descobrir qual \xE9 o engima!"
   - key: 
     value: 
   - key: Level01_Step3_INFO1
-    value: Teste dos abacaxis!
+    value: "Voc\xEA conseguiu, eu sabia! Muito prazer, meu nome \xE9 J\xFAlia!"
+  - key: Level01_Step3_INFO2
+    value: "Os Maliguenons est\xE3o cada vez mais fortes, mas eu tenho esperan\xE7a
+      que voc\xEA ir\xE1 conseguir derrot\xE1-los!"
+  - key: Level01_Step3_INFO3
+    value: "Aquela barreira azul nos impede de continuar. Mas voc\xEA est\xE1 pronta
+      para seguir sozinha!"
+  - key: Level01_Step3_INFO4
+    value: "Lembre-se! Tente sempre usar a viar\xE1vel CONTADOR do comando de Repeti\xE7\xE3o!
+      Pode te ajudar em muitos momentos!"
+  - key: Level01_Step3_INFO5
+    value: Boa sorte e mande ver!
   - key: 
     value: 
   - key: 
@@ -66,6 +76,21 @@ MonoBehaviour:
     value: 
   - key: 
     value: 
+  - key: 
+    value: 
+  - key: 
+    value: 
+  - key: 
+    value: 
+  - key: ChestsTutorial_INFO
+    value: "B\xE1us de Tesouro! Os ba\xFAs verdes recuperam minha VIDA e os ba\xFAs
+      amarelos me d\xE3o MOEDAS DE OURO!"
+  - key: AttackTutorial_INFO
+    value: "Ah n\xE3o, Maliguenons! Para atacar, basta apertar o BOT\xC3O ESQUERDO
+      do Mouse!"
+  - key: MovementTutorial_INFO
+    value: "Para se movimentar voc\xEA pode usar as SETAS do seu teclado ou as teclas
+      W A S D."
   - key: NumMaxActionsAllowed_INFO
     value: "Os Maliguenons nos bloquearam para apenas usarmos no m\xE1ximo 3 a\xE7\xF5es
       por Repeti\xE7\xE3o!"

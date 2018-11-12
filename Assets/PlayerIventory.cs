@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerIventory : MonoBehaviour {
 
@@ -9,9 +10,10 @@ public class PlayerIventory : MonoBehaviour {
 
     public TextMeshProUGUI goldCoinText;
 
+    private bool mustShowMovementTutorial = true;
+
     // Use this for initialization
     void Start () {
-		
 	}
 	
 	// Update is called once per frame

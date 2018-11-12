@@ -15,6 +15,7 @@ public class DialogsController : MonoBehaviour
     public Camera cameraOriginal;
     public Camera cameraKidJonas;
     public Camera cameraKidCaio;
+    public Camera cameraKidJulia;
     public GameObject moneyCanvas;
     public GameCommandReceiver doorStepLevel01Step01;
     public List<GameObject> listMonster;
@@ -32,8 +33,10 @@ public class DialogsController : MonoBehaviour
 
     private List<string> listTextLevel01Step01 = new List<string>();
     private List<string> listTextLevel01Step02 = new List<string>();
+    private List<string> listTextLevel01Step03 = new List<string>();
 
     private bool isPlayerWarning = false;
+    private bool mustForceClose = false;
 
     private AudioSource audioData;
 
@@ -54,22 +57,27 @@ public class DialogsController : MonoBehaviour
         listTextLevel01Step02.Add("Level01_Step2_INFO4");
         listTextLevel01Step02.Add("Level01_Step2_INFO5");
         listTextLevel01Step02.Add("Level01_Step2_INFO6");
-
-        listTextLevel01Step02.Add("Level01_Step2_INFO6");
+    
+        listTextLevel01Step03.Add("Level01_Step3_INFO1");
+        listTextLevel01Step03.Add("Level01_Step3_INFO2");
+        listTextLevel01Step03.Add("Level01_Step3_INFO3");
+        listTextLevel01Step03.Add("Level01_Step3_INFO4");
+        listTextLevel01Step03.Add("Level01_Step3_INFO5");
     }
 
     private void Update()
     {
-        if (isPlayerDialoging && Input.GetButtonDown("Interact"))
+        if (!isWarningMessage && isPlayerDialoging && Input.GetButtonDown("Interact"))
         {
             audioData.Play();
             ManipulateNextLevel();
         }
 
-        if (isPlayerWarning && isWarningMessage)
+        if (mustForceClose && isPlayerWarning && isWarningMessage)
         {
             DeactivateCanvasWithDelay(5f);
             isPlayerWarning = false;
+            mustForceClose = false;
         }
     }
 
@@ -96,7 +104,7 @@ public class DialogsController : MonoBehaviour
                     return;
                 }
 
-                ActiveDialogLevel01(listTextLevel01Step01[currentIndexTextStep]);
+                ActivateCanvasWithTranslatedText(listTextLevel01Step01[currentIndexTextStep]);
                 return;
             }
 
@@ -108,7 +116,19 @@ public class DialogsController : MonoBehaviour
                     return;
                 }
 
-                ActiveDialogLevel01Step2(listTextLevel01Step02[currentIndexTextStep]);
+                ActivateCanvasWithTranslatedText(listTextLevel01Step02[currentIndexTextStep]);
+                return;
+            }
+
+            if (currentStep == 3)
+            {
+                if (currentIndexTextStep > 4)
+                {
+                    DesactiveDialogLevel01();
+                    return;
+                }
+
+                ActivateCanvasWithTranslatedText(listTextLevel01Step03[currentIndexTextStep]);
                 return;
             }
         }
@@ -124,14 +144,18 @@ public class DialogsController : MonoBehaviour
 
     public void ActiveDialogMaxActionsAllowed()
     {
+        mustForceClose = true;
         ActivateCanvasWithTranslatedText("NumMaxActionsAllowed_INFO");
     }
 
     public void ActiveDialogLevel01(string phraseKey)
     {
-        currentLevel = 1;
-        currentStep = 1;
-        cameraKidJonas.enabled = true;
+        if (!cameraKidJonas.enabled)
+        {
+            currentLevel = 1;
+            currentStep = 1;
+            cameraKidJonas.enabled = true;
+        }
 
         ActivateCanvasWithTranslatedText(phraseKey);
     }
@@ -144,12 +168,27 @@ public class DialogsController : MonoBehaviour
 
         if (canGoToNextStep)
         {
-            currentLevel = 1;
-            currentStep = 2;
-            cameraKidCaio.enabled = true;
+            if (!cameraKidCaio.enabled)
+            {
+                currentLevel = 1;
+                currentStep = 2;
+                cameraKidCaio.enabled = true;
 
-            ActivateCanvasWithTranslatedText(phraseKey);
+                ActivateCanvasWithTranslatedText(phraseKey);
+            }
         }
+    }
+
+    public void ActiveDialogLevel01Step3(string phraseKey)
+    {
+        if (!cameraKidJulia.enabled)
+        {
+            currentLevel = 1;
+            currentStep = 3;
+            cameraKidJulia.enabled = true;
+        }
+
+        ActivateCanvasWithTranslatedText(phraseKey);
     }
 
     public void ActiveTutorialIFPuzzleCrystalBoxLevel01Step02(GameObject tutorialIFPuzzleCrystalBox)
@@ -164,17 +203,15 @@ public class DialogsController : MonoBehaviour
         }
     }
 
-    public void ActiveDialogLevel01Step3(string phraseKey)
-    {
-        currentLevel = 1;
-        currentStep = 3;
 
+    public void ActiveDialogTutorial(string phraseKey)
+    {
         ActivateCanvasWithTranslatedText(phraseKey);
     }
 
-    private void ActivateCanvasWithTranslatedText(string phraseKey)
+    public void ActivateCanvasWithTranslatedText(string phraseKey)
     {
-        currentText = phraseKey;
+        currentText = phraseKey;      
 
         if (isWarningMessage)
         {
@@ -219,10 +256,11 @@ public class DialogsController : MonoBehaviour
     {
         cameraKidJonas.enabled = false;
         cameraKidCaio.enabled = false;
+        cameraKidJulia.enabled = false;
         DeactivateCanvasWithDelay(delay);
     }
 
-    private void DeactivateCanvasWithDelay(float delay)
+    public void DeactivateCanvasWithDelay(float delay)
     {
         m_DeactivationCoroutine = StartCoroutine(SetAnimatorParameterWithDelay(delay));
 

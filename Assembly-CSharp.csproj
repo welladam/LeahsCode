@@ -303,6 +303,7 @@
     <Compile Include="Assets\PlayerLife.cs" />
     <Compile Include="Assets\PuzzleCrystalCollider.cs" />
     <Compile Include="Assets\PuzzleForCountController.cs" />
+    <Compile Include="Assets\Scripts\Puzzles\Dialogs\DialogPersonController.cs" />
     <Compile Include="Assets\Scripts\Puzzles\Dialogs\DialogsController.cs" />
     <Compile Include="Assets\Scripts\Puzzles\Models\CommandFor.cs" />
     <Compile Include="Assets\Scripts\Puzzles\Models\CommandPuzzle.cs" />
@@ -313,9 +314,7 @@
     <Compile Include="Assets\Scripts\Puzzles\UI\MenuCanvasUI.cs" />
     <Compile Include="Assets\Scripts\Puzzles\UI\ResultUI.cs" />
     <Compile Include="Assets\Scripts\Puzzles\UI\UIPuzzleController.cs" />
-    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\CameraLogic.cs" />
-    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\Demo.cs" />
-    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\SimpleCharacterControl.cs" />
+    <Compile Include="Assets\UIPuzzleWinController.cs" />
     <None Include="Assets\3DGameKit_Third-PartyNotice.txt" />
     <None Include="Assets\3DGamekit\Art\Shaders\Rock.shader" />
     <None Include="Assets\3DGamekit\Packages\ProCore\Polybrush\README.txt" />
