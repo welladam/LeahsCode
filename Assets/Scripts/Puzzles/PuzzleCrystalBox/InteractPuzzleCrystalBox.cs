@@ -41,7 +41,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
 
         if (!isInPuzzleGame && !alreadyCompletedPuzzle && Input.GetButton("Interact") && hasPlayerInArea)
         {
-            ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y, ellen.transform.position.z - 0.05f);
+            ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y + 1f, ellen.transform.position.z);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             PlayerInput.Instance.ReleaseControl();
