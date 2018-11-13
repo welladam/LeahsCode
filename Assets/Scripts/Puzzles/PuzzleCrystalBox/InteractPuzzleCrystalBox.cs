@@ -6,7 +6,8 @@ using Gamekit3D;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Collider))]
-public class InteractPuzzleCrystalBox : MonoBehaviour {
+public class InteractPuzzleCrystalBox : MonoBehaviour
+{
 
     public static bool isInPuzzleGame = false;
 
@@ -25,8 +26,9 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
     private bool mustHideEnterText = false;
 
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         this.enterTextButton.gameObject.SetActive(false);
         this.hasPlayerInArea = false;
         this.uiPuzzle.SetActive(false);
@@ -41,6 +43,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
 
         if (!isInPuzzleGame && !alreadyCompletedPuzzle && Input.GetButton("Interact") && hasPlayerInArea)
         {
+            ellen.transform.localScale = new Vector3(0, 0, 0);
             ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y + 1f, ellen.transform.position.z);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -88,7 +91,10 @@ public class InteractPuzzleCrystalBox : MonoBehaviour {
     }
 
     public void ClosePuzzle()
-    {      
+    {
+        ellen.transform.localScale = new Vector3(1, 1, 1);
+        ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y + 1f, ellen.transform.position.z);
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         PlayerInput.Instance.GainControl();

@@ -11,6 +11,7 @@ public class PuzzleManipulate : MonoBehaviour
 {
     public GameObject puzzleBox1;
     public GameObject puzzleBox2;
+    public GameObject puzzleBox3;
     public GameObject healthBox;
     public GameCommandReceiver door;
 
@@ -51,6 +52,7 @@ public class PuzzleManipulate : MonoBehaviour
 
     private GameObject puzzleBox1Source = null;
     private GameObject puzzleBox2Source = null;
+    private GameObject puzzleBox3Source = null;
 
     private List<GameObject> generatedObjects = new List<GameObject>();
     private List<GameObject> generatedPanelsObjects = new List<GameObject>();
@@ -93,6 +95,12 @@ public class PuzzleManipulate : MonoBehaviour
         {
             puzzleBox2Source = Object.Instantiate(puzzleBox2, puzzleMain.transform);
             puzzleBox2Source.SetActive(false);
+        }
+
+        if (puzzleBox3 != null)
+        {
+            puzzleBox3Source = Object.Instantiate(puzzleBox3, puzzleMain.transform);
+            puzzleBox3Source.SetActive(false);
         }
     }
 
@@ -226,6 +234,13 @@ public class PuzzleManipulate : MonoBehaviour
                 Destroy(puzzleBox2);
                 puzzleBox2 = Object.Instantiate(puzzleBox2Source, puzzleMain.transform);
                 puzzleBox2.SetActive(true);
+            }
+
+            if (puzzleBox3Source != null)
+            {
+                Destroy(puzzleBox3);
+                puzzleBox3 = Object.Instantiate(puzzleBox3Source, puzzleMain.transform);
+                puzzleBox3.SetActive(true);
             }
 
             mustRestartPuzzle = false;
