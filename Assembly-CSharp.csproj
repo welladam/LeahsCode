@@ -299,6 +299,9 @@
     <Compile Include="Assets\3DGamekit\Scripts\Scripts\SoundTrackVolume.cs" />
     <Compile Include="Assets\3DGamekit\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\ButtonDownScript.cs" />
+    <Compile Include="Assets\ChangeMenuScene.cs" />
+    <Compile Include="Assets\ExitGameScreenFader.cs" />
+    <Compile Include="Assets\GameOverController.cs" />
     <Compile Include="Assets\PlayerIventory.cs" />
     <Compile Include="Assets\PlayerLife.cs" />
     <Compile Include="Assets\PuzzleCrystalCollider.cs" />

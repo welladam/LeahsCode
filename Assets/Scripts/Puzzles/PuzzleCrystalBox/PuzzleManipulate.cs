@@ -212,6 +212,8 @@ public class PuzzleManipulate : MonoBehaviour
 
             listCommands.Clear();
 
+            boxesDesroyed = countBoxMustDetroy;
+
             currentFloorX = 0;
             currentFloorY = 0;
 
@@ -514,16 +516,16 @@ public class PuzzleManipulate : MonoBehaviour
 
     private void ValidateFinishPuzzle()
     {
-        bool objectivesFinished = false;
+        bool objectivesFinished = true;
 
-        if (countBoxMustDetroy > 0 && boxesDesroyed == 0)
+        if (countBoxMustDetroy > 0 && boxesDesroyed != 0)
         {
-            objectivesFinished = true;
+            objectivesFinished = false;
         }
 
-        if (mustFoundKey && keyFounded)
+        if (mustFoundKey && !keyFounded)
         {
-            objectivesFinished = true;
+            objectivesFinished = false;
         }
 
         if (objectivesFinished)

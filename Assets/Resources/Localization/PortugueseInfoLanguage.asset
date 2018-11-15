@@ -16,10 +16,9 @@ MonoBehaviour:
   - key: Level01_Step1_INFO1
     value: "Bem vindo ao mundo dos Algoritmos, me chamo Jonas! Esse lugar \xE9 incr\xEDvel
       mas ultimamente estamos tendo muitos problemas com os Maliguenons! Acho que
-      voc\xEA pode nos ajudar! "
+      voc\xEA pode nos ajudar!"
   - key: Level01_Step1_INFO2
-    value: "Irei te orientar a encontrar o mestre dos Maliguenons e para ent\xE3o
-      derrot\xE1-lo!"
+    value: "Irei te orientar a encontrar o chefe dos Maliguenons para ent\xE3o derrot\xE1-lo!"
   - key: Level01_Step1_INFO3
     value: "No lado esquerdo est\xE1 a sua VIDA! Chamamos ela de VARI\xC1VEL. Ela
       pode ser alterada a qualquer momento! Mas cuidado, chegando a zero voc\xEA ir\xE1
@@ -45,8 +44,8 @@ MonoBehaviour:
     value: "Como o Jonas falou antes, cada moeda \xE9 uma CONSTANTE. Elas sempre ter\xE3o
       o mesmo valor e n\xE3o adianta tentar modificar elas!"
   - key: Level01_Step2_INFO4
-    value: "Utilizando ATRIBUI\xC7\xC3O, n\xF3s juntamos todas as moedas que voc\xEA
-      ganhou a sua Bolsa!"
+    value: "Utilizando a a\xE7\xE3o de ATRIBUI\xC7\xC3O, n\xF3s conseguimos juntar
+      todas as moedas que voc\xEA ganhou at\xE9 agora e guardar em sua Bolsa!"
   - key: Level01_Step2_INFO5
     value: "Aqui n\xF3s tamb\xE9m chamamos essa bolsa de moedas de VARI\xC1VEL, pois
       voc\xEA pode ter diiiiversas moedas!"
@@ -61,7 +60,7 @@ MonoBehaviour:
     value: "Os Maliguenons est\xE3o cada vez mais fortes, mas eu tenho esperan\xE7a
       que voc\xEA ir\xE1 conseguir derrot\xE1-los!"
   - key: Level01_Step3_INFO3
-    value: "Aquela barreira azul nos impede de continuar. Mas voc\xEA est\xE1 pronta
+    value: "Aquela barreira azul me impede de continuar. Mas voc\xEA est\xE1 pronta
       para seguir sozinha!"
   - key: Level01_Step3_INFO4
     value: "Lembre-se! Tente sempre usar a viar\xE1vel CONTADOR do comando de Repeti\xE7\xE3o!
@@ -76,21 +75,24 @@ MonoBehaviour:
     value: 
   - key: 
     value: 
-  - key: 
-    value: 
-  - key: 
-    value: 
-  - key: 
-    value: 
+  - key: Checkpoint_INFO
+    value: Um Cristal de Checkpoint! Caso eu desmaie nas batalhas, irei voltar para
+      esse cristal!
+  - key: GameOver_INFO
+    value: "Consegui derrotar os Maliguenons! Agora todos do Planeta Algoritmo est\xE3o
+      salvos!"
+  - key: KillBossTutorial_INFO
+    value: "O mestre dos Maliguenons! Para derrot\xE1-lo preciso atacar a parte de
+      tr\xE1s da esfera azul que fica no corpo dele!"
   - key: ChestsTutorial_INFO
     value: "B\xE1us de Tesouro! Os ba\xFAs verdes recuperam minha VIDA e os ba\xFAs
       amarelos me d\xE3o MOEDAS DE OURO!"
   - key: AttackTutorial_INFO
-    value: "Ah n\xE3o, Maliguenons! Para atacar, basta apertar o BOT\xC3O ESQUERDO
+    value: "Ah n\xE3o, Maliguenons! Para atacar, preciso apertar o BOT\xC3O ESQUERDO
       do Mouse!"
   - key: MovementTutorial_INFO
-    value: "Para se movimentar voc\xEA pode usar as SETAS do seu teclado ou as teclas
-      W A S D."
+    value: Para se movimentar basta usar as SETAS do seu teclado ou as teclas W A
+      S D.
   - key: NumMaxActionsAllowed_INFO
     value: "Os Maliguenons nos bloquearam para apenas usarmos no m\xE1ximo 3 a\xE7\xF5es
       por Repeti\xE7\xE3o!"
