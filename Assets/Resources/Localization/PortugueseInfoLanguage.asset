@@ -20,15 +20,16 @@ MonoBehaviour:
   - key: Level01_Step1_INFO2
     value: "Irei te orientar a encontrar o chefe dos Maliguenons para ent\xE3o derrot\xE1-lo!"
   - key: Level01_Step1_INFO3
-    value: "No lado esquerdo est\xE1 a sua VIDA! Chamamos ela de VARI\xC1VEL. Ela
-      pode ser alterada a qualquer momento! Mas cuidado, chegando a zero voc\xEA ir\xE1
-      desmaiar! "
+    value: "No lado esquerdo est\xE1 o seu marcador de vida, representado por um Cora\xE7\xE3o.
+      Chamamos o marcador de VARI\xC1VEL, pois conforme a sua jornada voc\xEA pode
+      ganhar ou perder pontos de vida."
   - key: Level01_Step1_INFO4
-    value: "Os n\xFAmeros ao lado da sua VIDA determina a quantidade de cora\xE7\xF5es
-      que voc\xEA tem! Chamamos eles de CONSTANTES."
+    value: "Os PONTOS determinam a quantidade de cora\xE7\xF5es que voc\xEA tem! Chamamos
+      esses pontos de CONSTANTES."
   - key: Level01_Step1_INFO5
-    value: "Quando voc\xEA ganha ou perde constantes de cora\xE7\xF5es, a vari\xE1vel
-      vida \xE9 modificada. Chamamos essa a\xE7\xE3o de ATRIBUI\xC7\xC3O."
+    value: "Para adicionar ou remover pontos de vida \xE9 preciso realizar a a\xE7\xE3o
+      de ATRIBUI\xC7\xC3O, na qual \xE9 realizada automaticamente quando voc\xEA leva
+      algum dano dos Maliguenons ou recupera sua vida nos ba\xFAs!"
   - key: Level01_Step1_INFO6
     value: "Agora que voc\xEA sabe um pouco do nosso mundo, por favor v\xE1 at\xE9
       a porta para continuarmos nossa jornada!"
@@ -50,7 +51,7 @@ MonoBehaviour:
     value: "Aqui n\xF3s tamb\xE9m chamamos essa bolsa de moedas de VARI\xC1VEL, pois
       voc\xEA pode ter diiiiversas moedas!"
   - key: Level01_Step2_INFO6
-    value: "Agora n\xF3s temos que resolver o mesterioso engima da porta para poder
+    value: "Agora n\xF3s temos que resolver o misterioso engima da porta para poder
       liberar ela! V\xE1 at\xE9 o lado dela para descobrir qual \xE9 o engima!"
   - key: 
     value: 

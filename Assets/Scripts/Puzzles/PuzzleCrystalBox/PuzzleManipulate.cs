@@ -13,6 +13,7 @@ public class PuzzleManipulate : MonoBehaviour
     public GameObject puzzleBox2;
     public GameObject puzzleBox3;
     public GameObject healthBox;
+    public GameObject key;
     public GameCommandReceiver door;
 
     public GameObject puzzleMain;
@@ -101,6 +102,11 @@ public class PuzzleManipulate : MonoBehaviour
         {
             puzzleBox3Source = Object.Instantiate(puzzleBox3, puzzleMain.transform);
             puzzleBox3Source.SetActive(false);
+        }
+
+        if(key != null)
+        {
+            key.SetActive(true);
         }
     }
 
@@ -243,6 +249,11 @@ public class PuzzleManipulate : MonoBehaviour
                 Destroy(puzzleBox3);
                 puzzleBox3 = Object.Instantiate(puzzleBox3Source, puzzleMain.transform);
                 puzzleBox3.SetActive(true);
+            }
+
+            if (key != null)
+            {
+                key.SetActive(true);
             }
 
             mustRestartPuzzle = false;
@@ -453,7 +464,7 @@ public class PuzzleManipulate : MonoBehaviour
         {
             if (objectWithCrystalSamePosition != null && objectWithCrystalSamePosition.tag == "Key")
             {
-                Destroy(objectWithCrystalSamePosition);
+                objectWithCrystalSamePosition.SetActive(false);
                 keyFounded = true;
             }
             return;

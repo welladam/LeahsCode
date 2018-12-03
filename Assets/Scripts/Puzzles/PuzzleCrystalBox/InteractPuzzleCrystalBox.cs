@@ -26,6 +26,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour
     private bool mustHideEnterText = false;
 
 
+
     // Use this for initialization
     void Start()
     {
@@ -43,8 +44,8 @@ public class InteractPuzzleCrystalBox : MonoBehaviour
 
         if (!isInPuzzleGame && !alreadyCompletedPuzzle && Input.GetButton("Interact") && hasPlayerInArea)
         {
-            ellen.transform.localScale = new Vector3(0, 0, 0);
-            ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y + 1f, ellen.transform.position.z);
+            ellen.transform.localScale = new Vector3(0, 1, 0);
+            //ellen.transform.position = new Vector3(ellen.transform.position.x + 1f, ellen.transform.position.y + 1f, ellen.transform.position.z + 1f);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             PlayerInput.Instance.ReleaseControl();
@@ -61,6 +62,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour
                 ButtonDownScript.forceOpenIfTutorial = true;
             }
 
+            OnPlayerInArea.Invoke();
             PuzzleManipulate.mustRestartPuzzle = true;
         }
     }
@@ -71,7 +73,6 @@ public class InteractPuzzleCrystalBox : MonoBehaviour
         {
             this.enterTextButton.gameObject.SetActive(!mustHideEnterText);
             this.hasPlayerInArea = true;
-            OnPlayerInArea.Invoke();
         }
     }
 
@@ -81,7 +82,6 @@ public class InteractPuzzleCrystalBox : MonoBehaviour
         {
             this.enterTextButton.gameObject.SetActive(false);
             this.hasPlayerInArea = false;
-            OnPlayerInArea.Invoke();
         }
     }
 
@@ -93,7 +93,7 @@ public class InteractPuzzleCrystalBox : MonoBehaviour
     public void ClosePuzzle()
     {
         ellen.transform.localScale = new Vector3(1, 1, 1);
-        ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y + 1f, ellen.transform.position.z);
+        //ellen.transform.position = new Vector3(ellen.transform.position.x, ellen.transform.position.y + 1f, ellen.transform.position.z);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -105,5 +105,6 @@ public class InteractPuzzleCrystalBox : MonoBehaviour
         mustHideEnterText = false;
         isInPuzzleGame = false;
         PuzzleManipulate.mustRestartPuzzle = true;
+        OnPlayerInArea.Invoke();
     }
 }

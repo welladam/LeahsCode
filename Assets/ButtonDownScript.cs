@@ -49,7 +49,6 @@ public class ButtonDownScript : MonoBehaviour
             }
 
             forceOpenIfTutorial = false;
-            return;
         }
 
         if (button.name == "exitButton")

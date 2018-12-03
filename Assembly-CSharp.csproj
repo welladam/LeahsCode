@@ -317,6 +317,7 @@
     <Compile Include="Assets\Scripts\Puzzles\UI\MenuCanvasUI.cs" />
     <Compile Include="Assets\Scripts\Puzzles\UI\ResultUI.cs" />
     <Compile Include="Assets\Scripts\Puzzles\UI\UIPuzzleController.cs" />
+    <Compile Include="Assets\SensibilityMouseSlider.cs" />
     <Compile Include="Assets\UIPuzzleWinController.cs" />
     <None Include="Assets\3DGameKit_Third-PartyNotice.txt" />
     <None Include="Assets\3DGamekit\Art\Shaders\Rock.shader" />
